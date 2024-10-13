@@ -35,8 +35,8 @@ router.post(
   auth(
     USER_ROLES.SUPER_ADMIN,
     USER_ROLES.ADMIN,
-    USER_ROLES.PROVIDER,
-    USER_ROLES.EMPLOYER
+    USER_ROLES.INFLUENCER,
+    USER_ROLES.BRAND
   ),
   validateRequest(AuthValidation.createChangePasswordZodSchema),
   AuthController.changePassword
