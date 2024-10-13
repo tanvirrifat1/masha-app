@@ -20,6 +20,7 @@ const brandSchema = new Schema<IBrand>(
     },
     email: {
       type: String,
+      default: null,
     },
     image: {
       type: String,
@@ -33,7 +34,7 @@ const brandSchema = new Schema<IBrand>(
     owner: {
       type: String,
     },
-    phoneNum: {
+    phnNum: {
       type: String,
     },
     whatAppNum: {

@@ -4,7 +4,7 @@ import { USER_ROLES } from '../../../enums/user';
 export type IUser = {
   role: USER_ROLES;
   fullName: string;
-  email: string;
+  email?: string;
   phnNum?: string;
   refferCode?: string;
   password: string;

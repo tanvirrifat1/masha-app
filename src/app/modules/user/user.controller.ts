@@ -18,6 +18,20 @@ const createBrandToDB = catchAsync(
   }
 );
 
+const createInfluencer = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { ...influencerData } = req.body;
+    const result = await UserService.creatInfluencerToDB(influencerData);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: 'influencer created successfully',
+      data: result,
+    });
+  }
+);
+
 // const createEmployer = catchAsync(
 //   async (req: Request, res: Response, next: NextFunction) => {
 //     const { ...employerData } = req.body;
@@ -72,4 +86,5 @@ export const UserController = {
   getUserProfile,
   updateProfile,
   createBrandToDB,
+  createInfluencer,
 };

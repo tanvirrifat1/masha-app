@@ -3,9 +3,9 @@ import { Model } from 'mongoose';
 export type IBrand = {
   image: string;
   name: string;
-  email: string;
+  email?: string;
   whatAppNum: string;
-  phoneNum: string;
+  phnNum?: string;
   owner: string;
   country: string;
   city: string;

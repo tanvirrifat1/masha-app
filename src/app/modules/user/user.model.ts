@@ -18,9 +18,8 @@ const userSchema = new Schema<IUser, UserModal>(
     },
     email: {
       type: String,
-      required: true,
-      unique: true,
       lowercase: true,
+      default: null,
     },
     password: {
       type: String,
@@ -83,10 +82,10 @@ userSchema.statics.isExistUserById = async (id: string) => {
   return isExist;
 };
 
-userSchema.statics.isExistUserByEmail = async (email: string) => {
-  const isExist = await User.findOne({ email });
-  return isExist;
-};
+// userSchema.statics.isExistUserByEmail = async (email: string) => {
+//   const isExist = await User.findOne({ email });
+//   return isExist;
+// };
 
 //is match password
 userSchema.statics.isMatchPassword = async (
@@ -99,10 +98,6 @@ userSchema.statics.isMatchPassword = async (
 //check user
 userSchema.pre('save', async function (next) {
   //check user
-  const isExist = await User.findOne({ email: this.email });
-  if (isExist) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Email already exist!');
-  }
 
   //password hash
   this.password = await bcrypt.hash(

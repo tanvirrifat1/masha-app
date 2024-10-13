@@ -19,17 +19,17 @@ router
     UserController.updateProfile
   );
 
-// router
-//   .route('/create-provider')
-//   .post(
-//     validateRequest(UserValidation.createUserZodSchema),
-//     UserController.createProvider
-//   )
-//   .patch(
-//     auth(USER_ROLES.ADMIN),
-//     fileUploadHandler(),
-//     UserController.updateProfile
-//   );
+router
+  .route('/create-influencer')
+  .post(
+    validateRequest(UserValidation.createUserZodSchema),
+    UserController.createInfluencer
+  )
+  .patch(
+    auth(USER_ROLES.ADMIN),
+    fileUploadHandler(),
+    UserController.updateProfile
+  );
 
 // router.get(
 //   '/profile',
