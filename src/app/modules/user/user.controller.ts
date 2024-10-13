@@ -48,6 +48,7 @@ const createInfluencer = catchAsync(
 
 const getUserProfile = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
+  console.log(user,'sadsa');
   const result = await UserService.getUserProfileFromDB(user);
 
   sendResponse(res, {

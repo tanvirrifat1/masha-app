@@ -81,10 +81,10 @@ userSchema.statics.isExistUserById = async (id: string) => {
   return isExist;
 };
 
-// userSchema.statics.isExistUserByEmail = async (email: string) => {
-//   const isExist = await User.findOne({ email });
-//   return isExist;
-// };
+userSchema.statics.isExistUserByEmail = async (email: string) => {
+  const isExist = await User.findOne({ email });
+  return isExist;
+};
 
 //is match password
 userSchema.statics.isMatchPassword = async (
