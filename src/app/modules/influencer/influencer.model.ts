@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { IInfluencer } from './influencer.interface';
+import { Gender } from './influencer.constant';
 
 const influencerShema = new Schema<IInfluencer>(
   {
@@ -36,7 +37,7 @@ const influencerShema = new Schema<IInfluencer>(
     },
     gender: {
       type: String,
-      enum: ['male', 'female', 'other'],
+      enum: Gender,
     },
     number: {
       type: String,

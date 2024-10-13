@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 export type IBrand = {
   image: string;
@@ -11,7 +11,7 @@ export type IBrand = {
   city: string;
   address: string;
   code: string;
-  category: string;
+  category: Types.ObjectId;
   manager: string;
   instagram: string;
   tiktok?: string;

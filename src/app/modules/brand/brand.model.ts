@@ -7,7 +7,8 @@ const brandSchema = new Schema<IBrand>(
       type: String,
     },
     category: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'Category',
     },
     city: {
       type: String,

@@ -11,4 +11,6 @@ router.patch(
   BrandController.updatedBrand
 );
 
+router.get('/', BrandController.getAllBrands);
+
 export const BrandRoutes = router;
