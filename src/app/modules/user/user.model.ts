@@ -18,7 +18,6 @@ const userSchema = new Schema<IUser, UserModal>(
     },
     email: {
       type: String,
-      lowercase: true,
       default: null,
     },
     password: {

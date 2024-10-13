@@ -15,6 +15,100 @@ import { Brand } from '../brand/brand.model';
 import { IInfluencer } from '../influencer/influencer.interface';
 import { Influencer } from '../influencer/influencer.model';
 
+// const createBrandToDB = async (payload: Partial<IUser & IBrand>) => {
+//   const session = await startSession();
+
+//   try {
+//     session.startTransaction();
+
+//     // Set role
+//     payload.role = USER_ROLES.BRAND;
+
+//     const isNumberExist = await User.findOne({
+//       phnNum: {
+//         $eq: payload.phnNum,
+//         $exists: true,
+//         $ne: undefined,
+//       },
+//     });
+//     if (isNumberExist) {
+//       throw new ApiError(StatusCodes.BAD_REQUEST, 'Phone number already exist');
+//     }
+
+//     const isEmail = await User.findOne({
+//       email: {
+//         $eq: payload.email,
+//         $exists: true,
+//         $ne: undefined,
+//       },
+//     });
+//     if (isEmail) {
+//       throw new ApiError(StatusCodes.BAD_REQUEST, 'Email already exist');
+//     }
+
+//     // Validate required fields
+//     if (!payload.email) {
+//       if (!payload.phnNum) {
+//         throw new ApiError(
+//           StatusCodes.BAD_REQUEST,
+//           'Please provide phone number or email'
+//         );
+//       }
+//     }
+
+//     // Create brand
+//     const [brand] = await Brand.create([{ email: payload.email }], { session });
+//     if (!brand) {
+//       throw new ApiError(StatusCodes.BAD_REQUEST, 'Failed to create brand');
+//     }
+
+//     payload.brand = brand._id;
+
+//     // Create user
+//     const [user] = await User.create([payload], { session });
+//     if (!user) {
+//       throw new ApiError(StatusCodes.BAD_REQUEST, 'Failed to create user');
+//     }
+
+//     // Generate OTP and prepare email
+//     const otp = generateOTP();
+//     const emailValues = {
+//       name: user.fullName,
+//       email: user.email,
+//       otp: otp,
+//     };
+//     const accountEmailTemplate = emailTemplate.createAccount(emailValues);
+//     emailHelper.sendEmail(accountEmailTemplate);
+
+//     // Update user with authentication details
+//     const authentication = {
+//       oneTimeCode: otp,
+//       expireAt: new Date(Date.now() + 3 * 60000),
+//     };
+//     const updatedUser = await User.findOneAndUpdate(
+//       { _id: user._id },
+//       { $set: { authentication } },
+//       { session, new: true }
+//     );
+
+//     if (!updatedUser) {
+//       throw new ApiError(StatusCodes.NOT_FOUND, 'User not found for update');
+//     }
+
+//     // Commit transaction
+//     await session.commitTransaction();
+
+//     return updatedUser;
+//   } catch (error) {
+//     // Abort transaction on error
+//     await session.abortTransaction();
+//     throw error;
+//   } finally {
+//     // Ensure session ends regardless of success or failure
+//     await session.endSession();
+//   }
+// };
+
 const createBrandToDB = async (payload: Partial<IUser & IBrand>) => {
   const session = await startSession();
 
@@ -32,12 +126,21 @@ const createBrandToDB = async (payload: Partial<IUser & IBrand>) => {
       },
     });
     if (isNumberExist) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Phone number already exist');
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        'Phone number already exists'
+      );
     }
 
-    const isEmail = await User.findOne({ email: payload.email });
+    const isEmail = await User.findOne({
+      email: {
+        $eq: payload.email,
+        $exists: true,
+        $ne: undefined,
+      },
+    });
     if (isEmail) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Email already exist');
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Email already exists');
     }
 
     // Validate required fields
@@ -64,35 +167,10 @@ const createBrandToDB = async (payload: Partial<IUser & IBrand>) => {
       throw new ApiError(StatusCodes.BAD_REQUEST, 'Failed to create user');
     }
 
-    // Generate OTP and prepare email
-    const otp = generateOTP();
-    const emailValues = {
-      name: user.fullName,
-      email: user.email,
-      otp: otp,
-    };
-    const accountEmailTemplate = emailTemplate.createAccount(emailValues);
-    emailHelper.sendEmail(accountEmailTemplate);
-
-    // Update user with authentication details
-    const authentication = {
-      oneTimeCode: otp,
-      expireAt: new Date(Date.now() + 3 * 60000),
-    };
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: user._id },
-      { $set: { authentication } },
-      { session, new: true }
-    );
-
-    if (!updatedUser) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'User not found for update');
-    }
-
     // Commit transaction
     await session.commitTransaction();
 
-    return updatedUser;
+    return user;
   } catch (error) {
     // Abort transaction on error
     await session.abortTransaction();
