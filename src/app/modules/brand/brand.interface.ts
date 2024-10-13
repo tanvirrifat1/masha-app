@@ -13,6 +13,8 @@ export type IBrand = {
   code: string;
   category: string;
   manager: string;
+  instagram: string;
+  tiktok?: string;
 };
 
 export type BrandModel = {} & Model<IBrand>;

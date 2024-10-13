@@ -42,6 +42,12 @@ const brandSchema = new Schema<IBrand>(
     manager: {
       type: String,
     },
+    instagram: {
+      type: String,
+    },
+    tiktok: {
+      type: String,
+    },
   },
   {
     timestamps: true,

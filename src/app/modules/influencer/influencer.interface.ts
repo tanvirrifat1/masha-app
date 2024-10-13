@@ -1,13 +1,13 @@
 import { Model } from 'mongoose';
 
 export type IInfluencer = {
-  image: [string];
+  image: [string]; //
   instagram: string;
   tiktok?: string;
   followersIG: number;
   followersTK: number;
-  describe: string;
-  gender: 'male' | 'female' | 'other';
+  describe: string; //
+  gender: 'male' | 'female' | 'other'; //
   number: string;
   whatAppNum: string;
   address: string;

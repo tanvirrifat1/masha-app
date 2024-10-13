@@ -3,15 +3,18 @@ import ApiError from '../../../errors/ApiError';
 import { User } from '../user/user.model';
 import { IBrand } from './brand.interface';
 import { Brand } from './brand.model';
+import { USER_ROLES } from '../../../enums/user';
 
 const updateBrandToDB = async (id: string, payload: Partial<IBrand>) => {
-  const isBrandExist = await User.findOne({
-    brand: id,
-  });
+  // const isBrandExist = await User.findOne({
+  //   brand: id,
+  // });
 
-  if (!isBrandExist) {
-    throw new ApiError(StatusCodes.NOT_FOUND, 'Brand not found');
-  }
+  // console.log(isBrandExist);
+
+  // if (!isBrandExist) {
+  //   throw new ApiError(StatusCodes.NOT_FOUND, 'Brand not found');
+  // }
 
   const result = await Brand.findByIdAndUpdate(id, payload, {
     new: true,
