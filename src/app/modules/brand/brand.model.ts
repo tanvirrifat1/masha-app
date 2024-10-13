@@ -1,0 +1,51 @@
+import { model, Schema } from 'mongoose';
+import { IBrand } from './brand.interface';
+
+const brandSchema = new Schema<IBrand>(
+  {
+    address: {
+      type: String,
+    },
+    category: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    code: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    image: {
+      type: String,
+
+      default:
+        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+    },
+    name: {
+      type: String,
+    },
+    owner: {
+      type: String,
+    },
+    phoneNum: {
+      type: String,
+    },
+    whatAppNum: {
+      type: String,
+    },
+    manager: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export const Brand = model<IBrand>('Brand', brandSchema);
