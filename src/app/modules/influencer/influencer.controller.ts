@@ -19,6 +19,17 @@ const updatedInfluencer = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllInfluencer = catchAsync(async (req: Request, res: Response) => {
+  const result = await InfluencerService.getAllInfluencer(req.query);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Influencer retrived successfully',
+    data: result,
+  });
+});
+
 export const InfluencerController = {
   updatedInfluencer,
+  getAllInfluencer,
 };

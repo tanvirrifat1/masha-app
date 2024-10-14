@@ -119,7 +119,7 @@ const creatInfluencerToDB = async (payload: Partial<IUser & IInfluencer>) => {
       );
     }
 
-    payload.brand = influencer._id;
+    payload.influencer = influencer._id;
 
     // Create user
     const [user] = await User.create([payload], { session });

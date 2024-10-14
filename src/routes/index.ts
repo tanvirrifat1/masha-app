@@ -8,6 +8,7 @@ import { CategoryRoutes } from '../app/modules/category/category.route';
 import { CampaignRoutes } from '../app/modules/campaign/campaign.route';
 import { DiscountClubRoutes } from '../app/modules/discountClub/discountClub.route';
 import { RequirementRoutes } from '../app/modules/requirement/requirement.route';
+import { InviteRoutes } from '../app/modules/invite/invite.route';
 const router = express.Router();
 
 const apiRoutes = [
@@ -20,6 +21,7 @@ const apiRoutes = [
   { path: '/campaign', route: CampaignRoutes },
   { path: '/discount', route: DiscountClubRoutes },
   { path: '/requirement', route: RequirementRoutes },
+  { path: '/invite', route: InviteRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

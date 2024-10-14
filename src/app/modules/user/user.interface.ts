@@ -9,7 +9,7 @@ export type IUser = {
   referralCode?: string;
   password: string;
   status: 'active' | 'delete';
-  verified: boolean;
+  verified?: boolean;
   image?: string;
   brand?: Types.ObjectId;
   influencer?: Types.ObjectId;

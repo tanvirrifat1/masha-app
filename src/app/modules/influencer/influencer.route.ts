@@ -11,4 +11,6 @@ router.patch(
   InfluencerController.updatedInfluencer
 );
 
+router.get('/', InfluencerController.getAllInfluencer);
+
 export const InfluencerRoutes = router;
