@@ -11,5 +11,7 @@ export type ICampaign = {
   details: string;
   brandInstagram: string;
   collaboration: number;
+  rules?: string;
+  exchange?: string;
   status: 'active' | 'deleted';
 };

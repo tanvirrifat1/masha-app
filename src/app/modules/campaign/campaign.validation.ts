@@ -93,6 +93,8 @@ const campaignUpdatedValidation = z.object({
     .object({
       image: z.string().optional(),
       name: z.string().optional(),
+      rules: z.string().optional(),
+      exchange: z.string().optional(),
       startTime: dateStringSchema.optional(),
       endTime: dateStringSchema.optional(),
       address: z.string().optional(),

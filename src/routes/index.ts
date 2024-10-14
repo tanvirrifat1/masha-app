@@ -6,6 +6,7 @@ import { BrandRoutes } from '../app/modules/brand/brand.route';
 import { InfluencerRoutes } from '../app/modules/influencer/influencer.route';
 import { CategoryRoutes } from '../app/modules/category/category.route';
 import { CampaignRoutes } from '../app/modules/campaign/campaign.route';
+import { DiscountClubRoutes } from '../app/modules/discountClub/discountClub.route';
 const router = express.Router();
 
 const apiRoutes = [
@@ -16,6 +17,7 @@ const apiRoutes = [
   { path: '/influencer', route: InfluencerRoutes },
   { path: '/category', route: CategoryRoutes },
   { path: '/campaign', route: CampaignRoutes },
+  { path: '/discount', route: DiscountClubRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));
