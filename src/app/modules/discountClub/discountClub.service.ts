@@ -25,25 +25,30 @@ const getSingleDiscount = async (id: string) => {
   return result;
 };
 
-// const updateCampaignToDB = async (id: string, payload: Partial<ICampaign>) => {
-//   const result = await Campaign.findByIdAndUpdate(id, payload, {
-//     new: true,
-//     runValidators: true,
-//   });
-//   return result;
-// };
+const updateDiscountToDB = async (
+  id: string,
+  payload: Partial<IDiscountClub>
+) => {
+  const result = await DiscountClub.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
 
-// const deletedCampaignToDB = async (id: string) => {
-//   const result = await Campaign.findByIdAndUpdate(
-//     id,
-//     { status: 'delete' },
-//     { new: true, runValidators: true }
-//   );
-//   return result;
-// };
+const deletedDiscountToDB = async (id: string) => {
+  const result = await DiscountClub.findByIdAndUpdate(
+    id,
+    { status: 'delete' },
+    { new: true, runValidators: true }
+  );
+  return result;
+};
 
 export const DiscountClubService = {
   createDiscountToDB,
   getAllDiscount,
   getSingleDiscount,
+  updateDiscountToDB,
+  deletedDiscountToDB,
 };

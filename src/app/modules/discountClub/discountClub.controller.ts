@@ -46,31 +46,33 @@ const getSingleDiscount = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const updateCampaignToDB = catchAsync(async (req: Request, res: Response) => {
-//   const result = await CampaignService.updateCampaignToDB(
-//     req.params.id,
-//     req.body
-//   );
-//   sendResponse(res, {
-//     success: true,
-//     statusCode: StatusCodes.OK,
-//     message: 'Campaign updated successfully',
-//     data: result,
-//   });
-// });
+const updateCampaignToDB = catchAsync(async (req: Request, res: Response) => {
+  const result = await DiscountClubService.updateDiscountToDB(
+    req.params.id,
+    req.body
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Discount-Club updated successfully',
+    data: result,
+  });
+});
 
-// const deletedCampaignToDB = catchAsync(async (req: Request, res: Response) => {
-//   const result = await CampaignService.deletedCampaignToDB(req.params.id);
-//   sendResponse(res, {
-//     success: true,
-//     statusCode: StatusCodes.OK,
-//     message: 'Campaign deleted successfully',
-//     data: result,
-//   });
-// });
+const deletedCampaignToDB = catchAsync(async (req: Request, res: Response) => {
+  const result = await DiscountClubService.deletedDiscountToDB(req.params.id);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Discount-Club deleted successfully',
+    data: result,
+  });
+});
 
 export const DiscountClubController = {
   createDiscountClubToDB,
   getAllDiscount,
   getSingleDiscount,
+  updateCampaignToDB,
+  deletedCampaignToDB,
 };

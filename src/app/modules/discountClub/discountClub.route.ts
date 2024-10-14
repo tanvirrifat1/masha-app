@@ -26,18 +26,17 @@ router.get(
   DiscountClubController.getSingleDiscount
 );
 
-// router.patch(
-//   '/:id',
-//   auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
-//   validateRequest(CampaignValidationZodSchema.campaignUpdatedValidation),
-//   CampaignController.updateCampaignToDB
-// );
+router.patch(
+  '/:id',
+  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  validateRequest(DiscountClubValidation.updatedDiscountClubValidation),
+  DiscountClubController.updateCampaignToDB
+);
 
-// router.delete(
-//   '/:id',
-//   auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
-
-//   CampaignController.deletedCampaignToDB
-// );
+router.delete(
+  '/:id',
+  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  DiscountClubController.deletedCampaignToDB
+);
 
 export const DiscountClubRoutes = router;
