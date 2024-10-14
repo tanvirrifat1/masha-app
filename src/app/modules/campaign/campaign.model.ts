@@ -15,6 +15,7 @@ const campaignSchema = new Schema<ICampaign>(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     startTime: {
       type: String,
@@ -27,6 +28,7 @@ const campaignSchema = new Schema<ICampaign>(
     address: {
       type: String,
       required: true,
+      trim: true,
     },
     gender: {
       type: String,
@@ -36,10 +38,12 @@ const campaignSchema = new Schema<ICampaign>(
     dressCode: {
       type: String,
       required: true,
+      trim: true,
     },
     brandInstagram: {
       type: String,
       required: true,
+      trim: true,
     },
     collaboration: {
       type: Number,

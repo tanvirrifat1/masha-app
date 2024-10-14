@@ -88,6 +88,36 @@ const campaignValidation = z.object({
     ),
 });
 
+const campaignUpdatedValidation = z.object({
+  body: z
+    .object({
+      image: z.string().optional(),
+      name: z.string().optional(),
+      startTime: dateStringSchema.optional(),
+      endTime: dateStringSchema.optional(),
+      address: z.string().optional(),
+      gender: z.enum(['male', 'female', 'other']),
+      dressCode: z.string().optional(),
+      brandInstagram: z.string().optional(),
+      collaboration: z.number().min(0).optional(),
+    })
+    .refine(
+      body => {
+        if (body.startTime && body.endTime) {
+          const start = new Date(body.startTime);
+          const end = new Date(body.endTime);
+          return end > start;
+        }
+
+        return true;
+      },
+      {
+        message: 'Start time should be before End time!',
+      }
+    ),
+});
+
 export const CampaignValidationZodSchema = {
   campaignValidation,
+  campaignUpdatedValidation,
 };

@@ -14,4 +14,30 @@ router.post(
   CampaignController.createCampaignToDB
 );
 
+router.get(
+  '/',
+  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  CampaignController.getAllCampaigns
+);
+
+router.get(
+  '/:id',
+  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  CampaignController.getSingleCmpaign
+);
+
+router.patch(
+  '/:id',
+  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  validateRequest(CampaignValidationZodSchema.campaignUpdatedValidation),
+  CampaignController.updateCampaignToDB
+);
+
+router.delete(
+  '/:id',
+  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+
+  CampaignController.deletedCampaignToDB
+);
+
 export const CampaignRoutes = router;
