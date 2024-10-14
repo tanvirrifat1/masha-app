@@ -21,7 +21,7 @@ const brandSchema = new Schema<IBrand>(
     },
     email: {
       type: String,
-      default: null,
+      // default: null,
     },
     image: {
       type: String,

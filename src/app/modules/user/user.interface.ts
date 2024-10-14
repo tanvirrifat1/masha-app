@@ -6,7 +6,7 @@ export type IUser = {
   fullName: string;
   email?: string;
   phnNum?: string;
-  refferCode?: string;
+  referralCode?: string;
   password: string;
   status: 'active' | 'delete';
   verified: boolean;

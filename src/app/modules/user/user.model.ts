@@ -18,7 +18,7 @@ const userSchema = new Schema<IUser, UserModal>(
     },
     email: {
       type: String,
-      default: null,
+      // default: null,
     },
     password: {
       type: String,
@@ -29,7 +29,7 @@ const userSchema = new Schema<IUser, UserModal>(
     phnNum: {
       type: String,
     },
-    refferCode: {
+    referralCode: {
       type: String,
     },
 
@@ -42,10 +42,7 @@ const userSchema = new Schema<IUser, UserModal>(
       type: Boolean,
       default: false,
     },
-    // image: {
-    //   type: String,
-    //   default: 'https://i.postimg.cc/jqN651cq/profile.png',
-    // },
+
     brand: {
       type: Schema.Types.ObjectId,
       ref: 'Brand',
