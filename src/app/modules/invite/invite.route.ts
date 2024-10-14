@@ -12,5 +12,6 @@ router.post(
 );
 
 router.get('/', InviteController.getAllInvites);
+router.patch('/:id', InviteController.updatedInviteToDB);
 
 export const InviteRoutes = router;

@@ -24,7 +24,18 @@ const getAllInvites = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updatedInviteToDB = catchAsync(async (req: Request, res: Response) => {
+  const result = await InviteService.updatedInviteToDB(req.params.id, req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Invite status updated successfully',
+    data: result,
+  });
+});
+
 export const InviteController = {
   createCategoryToDB,
   getAllInvites,
+  updatedInviteToDB,
 };

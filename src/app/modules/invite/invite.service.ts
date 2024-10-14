@@ -16,12 +16,7 @@ const getAllInvites = async (query: Record<string, unknown>) => {
           path: 'brand',
         },
       })
-      .populate({
-        path: 'influencer',
-        populate: {
-          path: 'influencer',
-        },
-      }),
+      .populate('influencer'),
     query
   )
     .search(['brand', 'influencer'])
@@ -34,7 +29,20 @@ const getAllInvites = async (query: Record<string, unknown>) => {
   return result;
 };
 
+const updatedInviteToDB = async (id: string, payload: Partial<IInvite>) => {
+  const result = await Invite.findByIdAndUpdate(
+    id, // ID of the invite to update
+    { status: payload.status }, // Only updating the 'status' field
+    {
+      new: true, // Returns the updated document instead of the original
+      runValidators: true, // Runs schema validators during update
+    }
+  );
+  return result;
+};
+
 export const InviteService = {
   createInviteToDB,
   getAllInvites,
+  updatedInviteToDB,
 };

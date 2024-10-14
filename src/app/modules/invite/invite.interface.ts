@@ -1,6 +1,11 @@
 import { Types } from 'mongoose';
 
-type IInviteStatus = 'Pending' | 'Accepted' | 'Rejected';
+type IInviteStatus =
+  | 'Pending'
+  | 'Accepted'
+  | 'Rejected'
+  | 'Review'
+  | 'Completed';
 
 export type IInvite = {
   brand: Types.ObjectId;
