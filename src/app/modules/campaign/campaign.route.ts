@@ -29,6 +29,12 @@ router.get(
 router.patch(
   '/:id',
   // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  CampaignController.updatedCampaignStatusToDB
+);
+
+router.patch(
+  '/:id',
+  // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
   validateRequest(CampaignValidationZodSchema.campaignUpdatedValidation),
   CampaignController.updateCampaignToDB
 );

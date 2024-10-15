@@ -4,6 +4,7 @@ import QueryBuilder from '../../builder/QueryBuilder';
 import { CampaignSearchAbleFields } from './campaign.contant';
 import { ICampaign } from './campaign.interface';
 import { Campaign } from './campaign.model';
+import { Collaborate } from '../collaboration/collaboration.model';
 
 const createCampaignToDB = async (payload: Partial<ICampaign>) => {
   const campaign = await Campaign.create(payload);
@@ -12,12 +13,7 @@ const createCampaignToDB = async (payload: Partial<ICampaign>) => {
 
 const getAllCampaigns = async (query: Record<string, unknown>) => {
   const campaignBuilder = new QueryBuilder(
-    Campaign.find().populate({
-      path: 'brand',
-      // populate: {
-      //   path: 'brand',
-      // },
-    }),
+    Campaign.find().populate('brand').populate('influencer'),
     query
   )
     .search(CampaignSearchAbleFields)
@@ -52,10 +48,81 @@ const deletedCampaignToDB = async (id: string) => {
   return result;
 };
 
+// const updatedCampaignStatusToDB = async (
+//   id: string,
+//   payload: Partial<ICampaign>
+// ) => {
+//   const camapign = await Campaign.findById(id);
+
+//   if (!camapign) {
+//     throw new Error(`Campaign with ID ${id} not found`);
+//   }
+
+//   const collabrationSatusSatus = await Collaborate.findOneAndUpdate(
+//     { campaign: camapign._id },
+//     { status: 'Completed' },
+//     { new: true }
+//   );
+
+//   if (!collabrationSatusSatus) {
+//     throw new ApiError(StatusCodes.BAD_REQUEST, 'Collaboration not found');
+//   }
+
+//   const result = await Campaign.findByIdAndUpdate(
+//     id,
+//     {
+//       $set: {
+//         typeStatus: 'Accepted',
+//       },
+//     },
+//     { new: true }
+//   );
+
+//   return result;
+// };
+
+const updatedCampaignStatusToDB = async (
+  id: string,
+  payload: Partial<ICampaign>
+) => {
+  const campaign = await Campaign.findById(id);
+
+  if (!campaign) {
+    throw new Error(`Campaign with ID ${id} not found`);
+  }
+
+  // Check if the status is being set to "Accepted"
+  if (payload.typeStatus === 'Accepted') {
+    const collaborationStatus = await Collaborate.findOneAndUpdate(
+      { campaign: campaign._id },
+      { status: 'Completed' },
+      { new: true }
+    );
+
+    if (!collaborationStatus) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Collaboration not found');
+    }
+  }
+
+  // Update the campaign status (Accepted or Rejected)
+  const result = await Campaign.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        typeStatus: payload.typeStatus,
+      },
+    },
+    { new: true }
+  );
+
+  return result;
+};
+
 export const CampaignService = {
   createCampaignToDB,
   getAllCampaigns,
   getSingleCmpaign,
   updateCampaignToDB,
   deletedCampaignToDB,
+  updatedCampaignStatusToDB,
 };

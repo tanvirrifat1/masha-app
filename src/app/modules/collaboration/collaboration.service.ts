@@ -8,7 +8,7 @@ import { Campaign } from '../campaign/campaign.model';
 
 const createCollaborationToDB = async (payload: ICollaboration) => {
   const result = await Collaborate.create(payload);
-  console.log(result);
+
   const updatedCampaign = await Campaign.findOneAndUpdate(
     { _id: result.campaign }, // Use the campaign's _id
     {
@@ -46,22 +46,31 @@ const updatedCollaborationToDB = async (
   id: string,
   payload: Partial<ICollaboration>
 ) => {
-  if (payload.status === 'Pending') {
-    payload.status = 'Accomplish';
-  }
-
   // Update the collaboration status
-  const result = await Collaborate.findByIdAndUpdate(
-    id,
-    { status: payload.status },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const result = await Collaborate.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
 
   return result;
 };
+
+// const updatedCollaborationToDB = async (
+//   id: string,
+//   payload: Partial<ICollaboration>
+// ) => {
+//   // Update the collaboration status
+//   const result = await Collaborate.findByIdAndUpdate(
+//     id,
+//     { status: payload.status },
+//     {
+//       new: true,
+//       runValidators: true,
+//     }
+//   );
+
+//   return result;
+// };
 
 export const CollaborationService = {
   createCollaborationToDB,

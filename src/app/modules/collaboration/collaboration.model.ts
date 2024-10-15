@@ -27,7 +27,7 @@ const collaborateSchema = new Schema<ICollaboration>(
     status: {
       type: String,
       enum: inviteStatus,
-      // default: 'Accepted',
+      default: 'Pending',
     },
   },
   {
@@ -36,7 +36,7 @@ const collaborateSchema = new Schema<ICollaboration>(
 );
 
 collaborateSchema.pre('save', function (next) {
-  if (this.status === 'Accomplish') {
+  if (this.status === 'Pending') {
     this.status = 'Review';
   }
   next();

@@ -30,16 +30,12 @@ const getAllInvites = async (query: Record<string, unknown>) => {
 };
 
 const updatedInviteToDB = async (id: string) => {
-  // Retrieve the invite first
   const invite = await Invite.findById(id);
-
-  console.log(invite);
 
   if (!invite) {
     throw new Error(`Invite with ID ${id} not found`);
   }
 
-  // Now that you have the invite, you can use invite.influencer
   const result = await Invite.findByIdAndUpdate(
     id,
     {

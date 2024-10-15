@@ -64,10 +64,26 @@ const deletedCampaignToDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updatedCampaignStatusToDB = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await CampaignService.updatedCampaignStatusToDB(
+      req.params.id,
+      req.body
+    );
+    sendResponse(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: 'Campaign status updated successfully',
+      data: result,
+    });
+  }
+);
+
 export const CampaignController = {
   createCampaignToDB,
   getAllCampaigns,
   getSingleCmpaign,
   updateCampaignToDB,
   deletedCampaignToDB,
+  updatedCampaignStatusToDB,
 };
