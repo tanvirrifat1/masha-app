@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
 export const BrandValiation = z.object({
-  body: z.object({
-    image: z.string({ required_error: 'required image' }),
+    // image: z.string({ required_error: 'required image' }),
     name: z.string({ required_error: 'required name' }),
     email: z.string({ required_error: 'required email' }).email(),
     whatAppNum: z
@@ -22,8 +21,8 @@ export const BrandValiation = z.object({
     manager: z.string({ required_error: 'required manager' }),
     instagram: z.string({ required_error: 'required instagram' }),
     tiktok: z.string().optional(),
-  }),
-});
+  })
+
 
 export const BrandValiationZodSchema = {
   BrandValiation,

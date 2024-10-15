@@ -65,8 +65,6 @@ const loginUserFromDB = async (payload: ILoginData) => {
   let isExistUser;
   // Check if the user exists by email or phone number
 
-  
-
   if (payload.email) {
     const isExistEmail = await User.findOne({
       email: {
@@ -74,6 +72,7 @@ const loginUserFromDB = async (payload: ILoginData) => {
         $exists: true,
         $ne: undefined,
       },
+      status: 'active',
     }).select('+password');
     isExistUser = isExistEmail;
   } else if (payload.phnNum) {
@@ -83,13 +82,19 @@ const loginUserFromDB = async (payload: ILoginData) => {
         $exists: true,
         $ne: undefined,
       },
+      status: 'active',
     }).select('+password');
     isExistUser = isexistPhone;
-  } else {
+  }
+  if (!isExistUser) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
   }
 
-  if (isExistUser.role === 'INFLUENCER' && !isExistUser.verified) {
+  if (
+    isExistUser &&
+    isExistUser.role === 'INFLUENCER' &&
+    !isExistUser.verified
+  ) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
       'Please verify your account, then try to login again'
@@ -97,7 +102,7 @@ const loginUserFromDB = async (payload: ILoginData) => {
   }
 
   // Check user status
-  if (isExistUser.status === 'delete') {
+  if (isExistUser && isExistUser.status === 'delete') {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
       'You don’t have permission to access this content. It looks like your account has been deactivated.'

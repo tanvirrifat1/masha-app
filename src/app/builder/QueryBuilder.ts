@@ -58,7 +58,7 @@ class QueryBuilder<T> {
 
   filter() {
     const queryObj = { ...this.query };
-
+    queryObj['status'] = 'active';
     // filtering
     const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
 

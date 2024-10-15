@@ -12,8 +12,14 @@ router.post(
   '/create-campaign',
   // auth(USER_ROLES.BRAND),
   fileUploadHandler(),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = CampaignValidationZodSchema.campaignValidation.parse(
+      JSON.parse(req.body.data)
+    );
+    return CampaignController.createCampaignToDB(req, res, next);
+  }
   // validateRequest(CampaignValidationZodSchema.campaignValidation),
-  CampaignController.createCampaignToDB
+  // CampaignController.createCampaignToDB
 );
 
 router.get(

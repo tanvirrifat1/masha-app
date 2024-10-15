@@ -27,7 +27,7 @@ const getAllCampaigns = async (query: Record<string, unknown>) => {
 };
 
 const getSingleCmpaign = async (id: string) => {
-  const result = await Campaign.findById(id);
+  const result = await Campaign.findOne({ _id: id, status: 'active' });
   return result;
 };
 
