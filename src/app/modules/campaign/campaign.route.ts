@@ -1,10 +1,11 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import validateRequest from '../../middlewares/validateRequest';
-import { CampaignValidationZodSchema } from './campaign.validation';
+
 import { CampaignController } from './campaign.controller';
 import auth from '../../middlewares/auth';
 import { USER_ROLES } from '../../../enums/user';
 import fileUploadHandler from '../../middlewares/fileUploadHandler';
+import { CampaignValidationZodSchema } from './campaign.validation';
 
 const router = express.Router();
 

@@ -1,34 +1,8 @@
 import { z } from 'zod';
 import { Gender } from './campaign.contant';
 
-const timeStringSchema = z.string().refine(
-  time => {
-    const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/; // 00-09 10-19 20-23
-    return regex.test(time);
-  },
-  {
-    message: 'Invalid time format , expected "HH:MM" in 24 hours format',
-  }
-);
 
-const campaignValidation = z.object({
-  image: z.string({ required_error: 'required image' }),
-  name: z.string({ required_error: 'required name' }),
-  startTime: z.string(),
-  endTime: z.string(),
-  address: z.string({ required_error: 'Address is required' }),
-  gender: z.enum(['male', 'female', 'other']),
-  dressCode: z.string({ required_error: 'Dress code is required' }),
-  brandInstagram: z.string({ required_error: 'Instagram is required' }),
-  collaboration: z.number().min(0, 'Collaboration must be a positive number'),
-  status: z.enum(['active', 'delete']).default('active'),
-});
 
-export const CampaignValidationZodSchema = {
-  campaignValidation,
-};
-
-import { z } from 'zod';
 
 const dateStringSchema = z.string().refine(
   date => {
@@ -104,7 +78,7 @@ const campaignValidation = z
 //     ),
 // });
 
-// export const CampaignValidationZodSchema = {
-//   campaignValidation,
-//   campaignUpdatedValidation,
-// };
+export const CampaignValidationZodSchema = {
+  campaignValidation,
+ 
+};
