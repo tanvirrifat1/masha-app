@@ -12,6 +12,23 @@ const campaignSchema = new Schema<ICampaign>(
         'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
       required: true,
     },
+    brand: {
+      type: Schema.Types.ObjectId,
+      ref: 'Brand',
+    },
+    influencer: {
+      type: Schema.Types.ObjectId,
+      ref: 'Influencer',
+    },
+    typeStatus: {
+      type: String,
+      enum: ['Pending', 'Accepted', 'Rejected'],
+    },
+    details: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,

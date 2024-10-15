@@ -4,14 +4,14 @@ import { Invites } from './invite.constant';
 
 const inviteSchema = new Schema<IInvite>(
   {
-    brand: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
     influencer: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Influencer',
+      required: true,
+    },
+    campaign: {
+      type: Schema.Types.ObjectId,
+      ref: 'Campaign',
       required: true,
     },
     status: {

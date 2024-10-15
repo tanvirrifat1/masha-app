@@ -63,6 +63,8 @@ const campaignValidation = z.object({
   body: z
     .object({
       image: z.string({ required_error: 'required image' }),
+      brand: z.string({ required_error: 'required brand' }),
+      influencer: z.string().optional(),
       name: z.string({ required_error: 'required name' }),
       startTime: dateStringSchema,
       endTime: dateStringSchema,

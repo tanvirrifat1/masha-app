@@ -4,13 +4,13 @@ import { inviteStatus } from './collaboration.constant';
 
 const collaborateSchema = new Schema<ICollaboration>(
   {
-    brand: {
+    campaign: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Campaign',
     },
     influencer: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Influencer',
     },
     image: {
       type: [String],
@@ -27,7 +27,7 @@ const collaborateSchema = new Schema<ICollaboration>(
     status: {
       type: String,
       enum: inviteStatus,
-      default: 'Accepted',
+      // default: 'Accepted',
     },
   },
   {
@@ -36,7 +36,7 @@ const collaborateSchema = new Schema<ICollaboration>(
 );
 
 collaborateSchema.pre('save', function (next) {
-  if (this.status === 'Accepted') {
+  if (this.status === 'Accomplish') {
     this.status = 'Review';
   }
   next();

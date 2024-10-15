@@ -11,7 +11,7 @@ const getAllInvites = async (query: Record<string, unknown>) => {
   const inviteBuilder = new QueryBuilder(
     Invite.find()
       .populate({
-        path: 'brand',
+        path: 'campaign',
         populate: {
           path: 'brand',
         },
@@ -19,7 +19,7 @@ const getAllInvites = async (query: Record<string, unknown>) => {
       .populate('influencer'),
     query
   )
-    .search(['brand', 'influencer'])
+    .search(['campaign', 'influencer'])
     .filter()
     .sort()
     .paginate()
@@ -29,15 +29,28 @@ const getAllInvites = async (query: Record<string, unknown>) => {
   return result;
 };
 
-const updatedInviteToDB = async (id: string, payload: Partial<IInvite>) => {
+const updatedInviteToDB = async (id: string) => {
+  // Retrieve the invite first
+  const invite = await Invite.findById(id);
+
+  console.log(invite);
+
+  if (!invite) {
+    throw new Error(`Invite with ID ${id} not found`);
+  }
+
+  // Now that you have the invite, you can use invite.influencer
   const result = await Invite.findByIdAndUpdate(
-    id, // ID of the invite to update
-    { status: payload.status }, // Only updating the 'status' field
+    id,
     {
-      new: true, // Returns the updated document instead of the original
-      runValidators: true, // Runs schema validators during update
-    }
+      $set: {
+        status: 'Accepted',
+        // influencer: invite.influencer, // Use invite.influencer here
+      },
+    },
+    { new: true }
   );
+
   return result;
 };
 

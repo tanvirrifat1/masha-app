@@ -11,7 +11,15 @@ const createCampaignToDB = async (payload: Partial<ICampaign>) => {
 };
 
 const getAllCampaigns = async (query: Record<string, unknown>) => {
-  const campaignBuilder = new QueryBuilder(Campaign.find(), query)
+  const campaignBuilder = new QueryBuilder(
+    Campaign.find().populate({
+      path: 'brand',
+      // populate: {
+      //   path: 'brand',
+      // },
+    }),
+    query
+  )
     .search(CampaignSearchAbleFields)
     .filter()
     .sort()

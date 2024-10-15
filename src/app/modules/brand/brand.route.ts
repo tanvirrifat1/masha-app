@@ -13,6 +13,6 @@ router.patch(
   BrandController.updatedBrand
 );
 
-router.get('/', auth(USER_ROLES.BRAND), BrandController.getAllBrands);
+router.get('/', BrandController.getAllBrands);
 
 export const BrandRoutes = router;

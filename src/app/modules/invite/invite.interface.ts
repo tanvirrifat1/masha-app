@@ -8,7 +8,7 @@ type IInviteStatus =
   | 'Completed';
 
 export type IInvite = {
-  brand: Types.ObjectId;
   influencer: Types.ObjectId;
+  campaign: Types.ObjectId;
   status: IInviteStatus;
 };

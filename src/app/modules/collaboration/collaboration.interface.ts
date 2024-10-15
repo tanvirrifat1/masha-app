@@ -3,12 +3,13 @@ import { Types } from 'mongoose';
 type ICollaborationStatus =
   | 'Pending'
   | 'Accepted'
+  | 'Rejected'
   | 'Accomplish'
   | 'Review'
   | 'Completed';
 
 export type ICollaboration = {
-  brand: Types.ObjectId;
+  campaign: Types.ObjectId;
   influencer: Types.ObjectId;
   status: ICollaborationStatus;
   instagram: string;

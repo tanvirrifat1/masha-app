@@ -28,7 +28,23 @@ const getAllCollaborations = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updatedCollaborationToDB = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await CollaborationService.updatedCollaborationToDB(
+      req.params.id,
+      req.body
+    );
+    sendResponse(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: 'Collaboration status updated successfully',
+      data: result,
+    });
+  }
+);
+
 export const CollaborationController = {
   createCollaborationToDB,
   getAllCollaborations,
+  updatedCollaborationToDB,
 };

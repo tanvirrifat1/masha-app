@@ -25,7 +25,7 @@ const getAllInvites = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updatedInviteToDB = catchAsync(async (req: Request, res: Response) => {
-  const result = await InviteService.updatedInviteToDB(req.params.id, req.body);
+  const result = await InviteService.updatedInviteToDB(req.params.id);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,

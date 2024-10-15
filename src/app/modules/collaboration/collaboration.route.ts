@@ -11,4 +11,6 @@ router.post(
 
 router.get('/', CollaborationController.getAllCollaborations);
 
+router.patch('/:id', CollaborationController.updatedCollaborationToDB);
+
 export const CollaborationRoutes = router;
