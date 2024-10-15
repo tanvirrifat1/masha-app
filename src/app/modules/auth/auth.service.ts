@@ -16,6 +16,7 @@ import cryptoToken from '../../../util/cryptoToken';
 import generateOTP from '../../../util/generateOTP';
 import { ResetToken } from '../resetToken/resetToken.model';
 import { User } from '../user/user.model';
+import { IUser } from '../user/user.interface';
 
 //login
 // const loginUserFromDB = async (payload: ILoginData) => {
@@ -186,27 +187,81 @@ const loginUserFromDB = async (payload: ILoginData) => {
 //   return { createToken };
 // };
 
-const forgetPasswordToDB = async (email: string) => {
-  const isExistUser = await User.isExistUserByEmail(email);
-  if (!isExistUser) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
+const forgetPasswordToDB = async (payload: any) => {
+  let isExistUser;
+  // Check if the user exists by email or phone number
+
+  if (payload.email) {
+    const isExistEmail = await User.findOne({
+      email: {
+        $eq: payload.email,
+        $exists: true,
+        $ne: undefined,
+      },
+      status: 'active',
+    }).select('+password');
+    isExistUser = isExistEmail as IUser;
+    if (!isExistEmail) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
+    }
+    //send mail
+    const otp = generateOTP();
+    const value = {
+      otp,
+      email: isExistEmail.email,
+    };
+    const forgetPassword = emailTemplate.resetPassword(value);
+    emailHelper.sendEmail(forgetPassword);
+
+    //save to DB
+    const authentication = {
+      oneTimeCode: otp,
+      expireAt: new Date(Date.now() + 3 * 60000),
+    };
+    await User.findOneAndUpdate(
+      { email: isExistEmail.email },
+      { $set: { authentication } }
+    );
+  } else if (payload.phnNum) {
+    const isexistPhone = (await User.findOne({
+      phnNum: {
+        $eq: payload.phnNum,
+        $exists: true,
+        $ne: undefined,
+      },
+      status: 'active',
+    }).select('+password')) as IUser;
+    if (!isexistPhone) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
+    }
+    isExistUser = isexistPhone;
+    //send mail
+    const otp = generateOTP();
+    const value = {
+      otp,
+      phone: isexistPhone.phnNum,
+    };
+    // otp sender service phone
+
+    // phoneOpt.sendEmail(forgetPassword);
+
+    //save to DB
+    const authentication = {
+      oneTimeCode: otp,
+      expireAt: new Date(Date.now() + 3 * 60000),
+    };
+    await User.findOneAndUpdate(
+      {
+        phnNum: {
+          $eq: payload.phnNum,
+          $exists: true,
+          $ne: undefined,
+        },
+        status: 'active',
+      },
+      { $set: { authentication } }
+    );
   }
-
-  //send mail
-  const otp = generateOTP();
-  const value = {
-    otp,
-    email: isExistUser.email,
-  };
-  const forgetPassword = emailTemplate.resetPassword(value);
-  emailHelper.sendEmail(forgetPassword);
-
-  //save to DB
-  const authentication = {
-    oneTimeCode: otp,
-    expireAt: new Date(Date.now() + 3 * 60000),
-  };
-  await User.findOneAndUpdate({ email }, { $set: { authentication } });
 };
 
 //verify email
