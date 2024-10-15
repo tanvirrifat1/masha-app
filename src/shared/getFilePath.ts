@@ -8,3 +8,10 @@ const getFilePath = (files: any, folderName: IFolderName) => {
 };
 
 export default getFilePath;
+
+export const getFilePaths = (files: any, folderName: IFolderName) => {
+  if (files && files.image) {
+    return files.image.map((file: any) => `/${folderName}/${file.filename}`);
+  }
+  return [];
+};

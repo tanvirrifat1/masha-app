@@ -3,11 +3,20 @@ import catchAsync from '../../../shared/catchAsync';
 import { BrandService } from './brand.service';
 import sendResponse from '../../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
+import getFilePath from '../../../shared/getFilePath';
 
 const updatedBrand = catchAsync(async (req: Request, res: Response) => {
   const brandId = req.params.id;
   const brandData = req.body;
-  const result = await BrandService.updateBrandToDB(brandId, brandData);
+
+  let image = getFilePath(req.files, 'images');
+  console.log(req.files);
+  const value = {
+    image,
+    ...req.body,
+  };
+
+  const result = await BrandService.updateBrandToDB(brandId, value);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,

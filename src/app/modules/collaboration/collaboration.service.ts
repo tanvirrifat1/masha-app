@@ -10,7 +10,7 @@ const createCollaborationToDB = async (payload: ICollaboration) => {
   const result = await Collaborate.create(payload);
 
   const updatedCampaign = await Campaign.findOneAndUpdate(
-    { _id: result.campaign }, // Use the campaign's _id
+    { _id: result.campaign },
     {
       $set: {
         typeStatus: 'Pending',

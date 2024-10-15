@@ -5,14 +5,44 @@ import sendResponse from '../../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import getFilePath from '../../../shared/getFilePath';
 
+// const createCampaignToDB = catchAsync(async (req: Request, res: Response) => {
+//   console.log(req.body.data);
+
+//   let image = getFilePath(req.files, 'images');
+//   const value = {
+//     image,
+//     ...req.body.data,
+//   };
+
+//   const result = await CampaignService.createCampaignToDB(value);
+//   sendResponse(res, {
+//     success: true,
+//     statusCode: StatusCodes.OK,
+//     message: 'Campaign created successfully',
+//     data: result,
+//   });
+// });
+
 const createCampaignToDB = catchAsync(async (req: Request, res: Response) => {
-  let image = getFilePath(req.files, 'images');
+  // Ensure that req.body.data is parsed correctly
+  const campaignData =
+    typeof req.body.data === 'string'
+      ? JSON.parse(req.body.data)
+      : req.body.data;
+  console.log(campaignData);
+  // Get image file paths
+  const image = getFilePath(req.files, 'images');
+
+  // Create the value object with parsed data and image
   const value = {
     image,
-    ...req.body,
+    ...campaignData,
   };
 
+  // Call the service to create the campaign in the database
   const result = await CampaignService.createCampaignToDB(value);
+
+  // Send the response
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,

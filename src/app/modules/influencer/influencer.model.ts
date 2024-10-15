@@ -1,6 +1,18 @@
 import { model, Schema } from 'mongoose';
-import { IInfluencer } from './influencer.interface';
+import { IInfluencer, TImage } from './influencer.interface';
 import { Gender } from './influencer.constant';
+
+const userImage = new Schema<TImage>({
+  image1: {
+    type: String,
+  },
+  image2: {
+    type: String,
+  },
+  image3: {
+    type: String,
+  },
+});
 
 const influencerShema = new Schema<IInfluencer>(
   {
@@ -9,9 +21,6 @@ const influencerShema = new Schema<IInfluencer>(
     },
     image: {
       type: [String],
-      default: [
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-      ],
     },
     whatAppNum: {
       type: String,

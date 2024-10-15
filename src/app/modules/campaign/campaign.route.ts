@@ -4,13 +4,15 @@ import { CampaignValidationZodSchema } from './campaign.validation';
 import { CampaignController } from './campaign.controller';
 import auth from '../../middlewares/auth';
 import { USER_ROLES } from '../../../enums/user';
+import fileUploadHandler from '../../middlewares/fileUploadHandler';
 
 const router = express.Router();
 
 router.post(
   '/create-campaign',
   // auth(USER_ROLES.BRAND),
-  validateRequest(CampaignValidationZodSchema.campaignValidation),
+  fileUploadHandler(),
+  // validateRequest(CampaignValidationZodSchema.campaignValidation),
   CampaignController.createCampaignToDB
 );
 
@@ -35,7 +37,7 @@ router.patch(
 router.patch(
   '/:id',
   // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
-  validateRequest(CampaignValidationZodSchema.campaignUpdatedValidation),
+  // validateRequest(CampaignValidationZodSchema.campaignUpdatedValidation),
   CampaignController.updateCampaignToDB
 );
 
