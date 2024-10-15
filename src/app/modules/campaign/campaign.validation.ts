@@ -45,40 +45,26 @@ const campaignValidation = z
         message: 'Start time should be before End time!',
       }
     )
-
-
-// const campaignUpdatedValidation = z.object({
-//   body: z
-//     .object({
-//       image: z.string().optional(),
-//       name: z.string().optional(),
-//       rules: z.string().optional(),
-//       exchange: z.string().optional(),
-//       startTime: dateStringSchema.optional(),
-//       endTime: dateStringSchema.optional(),
-//       address: z.string().optional(),
-//       gender: z.enum(['male', 'female', 'other']),
-//       dressCode: z.string().optional(),
-//       brandInstagram: z.string().optional(),
-//       collaboration: z.number().min(0).optional(),
-//     })
-//     .refine(
-//       body => {
-//         if (body.startTime && body.endTime) {
-//           const start = new Date(body.startTime);
-//           const end = new Date(body.endTime);
-//           return end > start;
-//         }
-
-//         return true;
-//       },
-//       {
-//         message: 'Start time should be before End time!',
-//       }
-//     ),
-// });
+const campaignUpdatedValidation = z
+    .object({
+      image: z.string({ required_error: 'required image' }),
+      brand: z.string({ required_error: 'required brand' }),
+      influencer: z.string().optional(),
+      name: z.string({ required_error: 'required name' }),
+      startTime: dateStringSchema,
+      endTime: dateStringSchema,
+      address: z.string({ required_error: 'Address is required' }),
+      gender: z.enum(['male', 'female', 'other']),
+      dressCode: z.string({ required_error: 'Dress code is required' }),
+      brandInstagram: z.string({ required_error: 'Instagram is required' }),
+      collaboration: z
+        .number()
+        .min(0, 'Collaboration must be a positive number'),
+      status: z.enum(['active', 'delete']).default('active'),
+    }).deepPartial()
+    
 
 export const CampaignValidationZodSchema = {
   campaignValidation,
- 
+  campaignUpdatedValidation,
 };
