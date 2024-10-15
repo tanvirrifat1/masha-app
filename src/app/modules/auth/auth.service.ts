@@ -64,24 +64,26 @@ const loginUserFromDB = async (payload: ILoginData) => {
 
   let isExistUser;
   // Check if the user exists by email or phone number
-  const isExistEmail = await User.findOne({
-    email: {
-      $eq: payload.email,
-      $exists: true,
-      $ne: undefined,
-    },
-  }).select('+password');
-  const isexistPhone = await User.findOne({
-    phnNum: {
-      $eq: payload.phnNum,
-      $exists: true,
-      $ne: undefined,
-    },
-  }).select('+password');
 
-  if (isExistEmail) {
+  
+
+  if (payload.email) {
+    const isExistEmail = await User.findOne({
+      email: {
+        $eq: payload.email,
+        $exists: true,
+        $ne: undefined,
+      },
+    }).select('+password');
     isExistUser = isExistEmail;
-  } else if (isexistPhone) {
+  } else if (payload.phnNum) {
+    const isexistPhone = await User.findOne({
+      phnNum: {
+        $eq: payload.phnNum,
+        $exists: true,
+        $ne: undefined,
+      },
+    }).select('+password');
     isExistUser = isexistPhone;
   } else {
     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");

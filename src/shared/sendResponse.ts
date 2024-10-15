@@ -20,7 +20,7 @@ const sendResponse = <T>(res: Response, data: IData<T>) => {
     pagination: data.pagination,
     data: data.data,
   };
-  res.status(data.statusCode).json(resData);
+  res.status(data.statusCode || 200).send(resData);
 };
 
 export default sendResponse;
