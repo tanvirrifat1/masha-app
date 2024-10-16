@@ -6,6 +6,7 @@ export const CampaignSearchAbleFields = [
   'gender',
   'dressCode',
   'brandInstagram',
+  'categoryName',
 ];
 
 export const CampaignFilterableFields = [

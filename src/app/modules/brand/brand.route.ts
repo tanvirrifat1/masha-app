@@ -8,6 +8,8 @@ import fileUploadHandler from '../../middlewares/fileUploadHandler';
 
 const router = express.Router();
 
+router.get('/', BrandController.getAllBrands);
+
 router.patch(
   '/:id',
   // validateRequest(BrandValiationZodSchema.BrandValiation),
@@ -20,7 +22,5 @@ router.patch(
     return BrandController.updatedBrand(req, res, next);
   }
 );
-
-router.get('/', BrandController.getAllBrands);
 
 export const BrandRoutes = router;

@@ -21,7 +21,8 @@ export type ICampaign = {
   rules?: string;
   exchange?: string;
   status: 'active' | 'deleted';
-  categories: string;
+  category?: Types.ObjectId;
+  categoryName?: string;
 };
 
 export type IICampaignFilters = {

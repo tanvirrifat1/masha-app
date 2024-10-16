@@ -9,10 +9,13 @@ import { brandSearchAbleFields } from './brand.constant';
 import { JwtPayload } from 'jsonwebtoken';
 
 const updateBrandToDB = async (id: string, payload: Partial<IBrand>) => {
+  payload.status = 'active';
   const result = await Brand.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
   });
+
+  console.log(result);
   return result;
 };
 
