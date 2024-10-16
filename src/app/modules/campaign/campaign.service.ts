@@ -238,7 +238,9 @@ const getAllCampaigns = async (
 // };
 
 const getSingleCmpaign = async (id: string) => {
-  const result = await Campaign.findOne({ _id: id, status: 'active' });
+  const result = await Campaign.findOne({ _id: id, status: 'active' }).populate(
+    ['brand', 'influencer', 'category']
+  );
 
   if (result === null) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Campaign not found');
@@ -248,6 +250,18 @@ const getSingleCmpaign = async (id: string) => {
 };
 
 const updateCampaignToDB = async (id: string, payload: Partial<ICampaign>) => {
+  const campaign = await Campaign.findById(id);
+  if (!campaign) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'campaign not found');
+  }
+
+  if (campaign.status !== 'active') {
+    throw new ApiError(
+      StatusCodes.FORBIDDEN,
+      'Campaign is not active, cannot be updated'
+    );
+  }
+
   const result = await Campaign.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
