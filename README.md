@@ -112,3 +112,121 @@ Explain how to run the automated tests for this system.
 ```bash
 npm test
 ```
+
+const getAllCampaigns = async (
+// filters: IICampaignFilters,
+// paginationOptions: IPaginationOptions
+// ) => {
+// const { searchTerm, ...filtersData } = filters;
+// const { page, limit, skip, sortBy, sortOrder } =
+// paginationHelpers.calculatePagination(paginationOptions);
+
+// const andConditions: any[] = [];
+
+// // Filtering conditions from filterData
+// if (Object.keys(filtersData).length) {
+// andConditions.push({
+// $and: Object.entries(filtersData).map(([field, value]) => {
+// if (typeof value === 'string') {
+// return {
+// [field]: {
+// $regex: value,
+// $options: 'i',
+// },
+// };
+// } else {
+// return { [field]: value };
+// }
+// }),
+// });
+// }
+
+// // Add condition for "active" status
+// andConditions.push({
+// status: 'active',
+// });
+
+// const sortConditions: Record<string, 1 | -1> = {};
+
+// if (sortBy && sortOrder) {
+// sortConditions[sortBy] = sortOrder === 'asc' ? 1 : -1;
+// }
+
+// const whereConditions =
+// andConditions.length > 0 ? { $and: andConditions } : {};
+
+// // Use aggregate to perform lookup and search on category.name
+// const result = await Campaign.aggregate([
+// {
+// $lookup: {
+//         from: 'brands',
+//         localField: 'brand',
+//         foreignField: '_id',
+//         as: 'brand',
+//       },
+//     },
+//     {
+//       $unwind: '$brand',
+// },
+// {
+// $lookup: {
+//         from: 'categories',
+//         localField: 'brand.category',
+//         foreignField: '_id',
+//         as: 'category',
+//       },
+//     },
+//     {
+//       $unwind: '$category',
+// },
+// {
+// $lookup: {
+//         from: 'influencers',
+//         localField: 'influencer',
+//         foreignField: '_id',
+//         as: 'influencer',
+//       },
+//     },
+//     {
+//       $unwind: '$influencer',
+// },
+// // Move the $match stage here to filter after lookups
+// {
+// $match: {
+// ...whereConditions,
+// $or: [
+// ...CampaignSearchAbleFields.map(field => ({
+// [field]: {
+// $regex: searchTerm,
+// $options: 'i',
+// },
+// })),
+// { 'category.categoryName': { $regex: searchTerm, $options: 'i' } },
+// { 'brand.country': { $regex: searchTerm, $options: 'i' } },
+// { 'brand.city': { $regex: searchTerm, $options: 'i' } },
+// { 'brand.brandName': { $regex: searchTerm, $options: 'i' } },
+// ],
+// },
+// },
+// {
+// $sort: sortConditions,
+// },
+// {
+// $skip: skip,
+// },
+// {
+// $limit: limit,
+// },
+// ]);
+
+// const total = await Campaign.countDocuments(whereConditions);
+// console.log(result);
+// return {
+// meta: {
+// page,
+// limit,
+// total,
+// },
+// data: result,
+// };
+// };

@@ -21,4 +21,18 @@ export type ICampaign = {
   rules?: string;
   exchange?: string;
   status: 'active' | 'deleted';
+  categories: string;
+};
+
+export type IICampaignFilters = {
+  searchTerm?: string;
+  categoryName?: string;
+  email?: string;
+  name?: string;
+  details?: string;
+  gender?: IGender;
+  brandInstagram?: IGender;
+  dressCode?: IGender;
+  influencer?: string;
+  brand?: string;
 };

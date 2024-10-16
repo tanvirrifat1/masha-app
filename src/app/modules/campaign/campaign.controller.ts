@@ -4,6 +4,12 @@ import { CampaignService } from './campaign.service';
 import sendResponse from '../../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import getFilePath from '../../../shared/getFilePath';
+import pick from '../../../shared/pick';
+import {
+  CampaignFilterableFields,
+  CampaignSearchAbleFields,
+  paginationFields,
+} from './campaign.contant';
 
 const createCampaignToDB = catchAsync(async (req: Request, res: Response) => {
   let image = getFilePath(req.files, 'images');
@@ -21,40 +27,28 @@ const createCampaignToDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const createCampaignToDB = catchAsync(async (req: Request, res: Response) => {
-//   // Ensure that req.body.data is parsed correctly
-//   const campaignData =
-//     typeof req.body.data === 'string'
-//       ? JSON.parse(req.body.data)
-//       : req.body.data;
-//   console.log(campaignData);
-//   // Get image file paths
-//   const image = getFilePath(req.files, 'images');
-
-//   // Create the value object with parsed data and image
-//   const value = {
-//     image,
-//     ...campaignData,
-//   };
-
-//   // Call the service to create the campaign in the database
-//   const result = await CampaignService.createCampaignToDB(value);
-
-//   // Send the response
+// const getAllCampaigns = catchAsync(async (req: Request, res: Response) => {
+//   const result = await CampaignService.getAllCampaigns(req.query);
 //   sendResponse(res, {
 //     success: true,
 //     statusCode: StatusCodes.OK,
-//     message: 'Campaign created successfully',
+//     message: 'Campaign retrived successfully',
 //     data: result,
 //   });
 // });
 
 const getAllCampaigns = catchAsync(async (req: Request, res: Response) => {
-  const result = await CampaignService.getAllCampaigns(req.query);
+  const filters = pick(req.query, CampaignFilterableFields);
+
+  const paginationOptions = pick(req.query, paginationFields);
+  const result = await CampaignService.getAllCampaigns(
+    filters,
+    paginationOptions
+  );
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,
-    message: 'Campaign retrived successfully',
+    message: 'Campaign retrieved successfully',
     data: result,
   });
 });
