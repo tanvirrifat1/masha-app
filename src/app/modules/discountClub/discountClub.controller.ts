@@ -8,9 +8,7 @@ import { DiscountClubService } from './discountClub.service';
 
 const createDiscountClubToDB = catchAsync(
   async (req: Request, res: Response) => {
-    let image =
-      getFilePath(req.files, 'images') ||
-      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'; // Default image
+    let image = getFilePath(req.files, 'images');
     const value = {
       image,
       ...req.body,

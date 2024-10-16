@@ -7,7 +7,6 @@ import getFilePath from '../../../shared/getFilePath';
 
 const updatedBrand = catchAsync(async (req: Request, res: Response) => {
   const brandId = req.params.id;
-  const brandData = req.body;
 
   let image = getFilePath(req.files, 'images');
 

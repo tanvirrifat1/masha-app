@@ -1,18 +1,6 @@
 import { model, Schema } from 'mongoose';
-import { IInfluencer, TImage } from './influencer.interface';
+import { IInfluencer } from './influencer.interface';
 import { Gender } from './influencer.constant';
-
-const userImage = new Schema<TImage>({
-  image1: {
-    type: String,
-  },
-  image2: {
-    type: String,
-  },
-  image3: {
-    type: String,
-  },
-});
 
 const influencerShema = new Schema<IInfluencer>(
   {

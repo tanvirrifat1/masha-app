@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { InfluencerController } from './influencer.controller';
 import validateRequest from '../../middlewares/validateRequest';
 import { InfluencerValiationZodSchema } from './influencer.validation';
@@ -10,7 +10,12 @@ router.patch(
   '/:id',
   // validateRequest(InfluencerValiationZodSchema.InfluencerValiation),
   fileUploadHandler(),
-  InfluencerController.updatedInfluencer
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = InfluencerValiationZodSchema.InfluencerValiation.parse(
+      JSON.parse(req.body.data)
+    );
+    return InfluencerController.updatedInfluencer(req, res, next);
+  }
 );
 
 router.get('/', InfluencerController.getAllInfluencer);
