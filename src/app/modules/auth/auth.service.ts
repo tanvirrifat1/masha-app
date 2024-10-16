@@ -17,31 +17,50 @@ import generateOTP from '../../../util/generateOTP';
 import { ResetToken } from '../resetToken/resetToken.model';
 import { User } from '../user/user.model';
 
-//login
 // const loginUserFromDB = async (payload: ILoginData) => {
-//   const { email, password, phnNum } = payload;
-//   const isExistUser = await User.findOne({ email }).select('+password');
-//   if (!isExistUser) {
+//   const { password } = payload;
+
+//   let isExistUser;
+//   // Check if the user exists by email or phone number
+//   const isExistEmail = await User.findOne({
+//     email: {
+//       $eq: payload.email,
+//       $exists: true,
+//       $ne: undefined,
+//     },
+//   }).select('+password');
+//   const isexistPhone = await User.findOne({
+//     phnNum: {
+//       $eq: payload.phnNum,
+//       $exists: true,
+//       $ne: undefined,
+//     },
+//   }).select('+password');
+
+//   if (isExistEmail) {
+//     isExistUser = isExistEmail;
+//   } else if (isexistPhone) {
+//     isExistUser = isexistPhone;
+//   } else {
 //     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
 //   }
 
-//   //check verified and status
-//   if (!isExistUser.verified) {
+//   if (isExistUser.role === 'INFLUENCER' && !isExistUser.verified) {
 //     throw new ApiError(
 //       StatusCodes.BAD_REQUEST,
 //       'Please verify your account, then try to login again'
 //     );
 //   }
 
-//   //check user status
+//   // Check user status
 //   if (isExistUser.status === 'delete') {
 //     throw new ApiError(
 //       StatusCodes.BAD_REQUEST,
-//       'You don’t have permission to access this content.It looks like your account has been deactivated.'
+//       'You don’t have permission to access this content. It looks like your account has been deactivated.'
 //     );
 //   }
 
-//   //check match password
+//   // Check password match
 //   if (
 //     password &&
 //     !(await User.isMatchPassword(password, isExistUser.password))
@@ -49,9 +68,14 @@ import { User } from '../user/user.model';
 //     throw new ApiError(StatusCodes.BAD_REQUEST, 'Password is incorrect!');
 //   }
 
-//   //create token
+//   // Create token
 //   const createToken = jwtHelper.createToken(
-//     { id: isExistUser._id, role: isExistUser.role, email: isExistUser.email },
+//     {
+//       id: isExistUser._id,
+//       role: isExistUser.role,
+//       email: isExistUser.email,
+//       phnNum: isExistUser.phnNum,
+//     },
 //     config.jwt.jwt_secret as Secret,
 //     config.jwt.jwt_expire_in as string
 //   );
@@ -64,30 +88,37 @@ const loginUserFromDB = async (payload: ILoginData) => {
 
   let isExistUser;
   // Check if the user exists by email or phone number
-  const isExistEmail = await User.findOne({
-    email: {
-      $eq: payload.email,
-      $exists: true,
-      $ne: undefined,
-    },
-  }).select('+password');
-  const isexistPhone = await User.findOne({
-    phnNum: {
-      $eq: payload.phnNum,
-      $exists: true,
-      $ne: undefined,
-    },
-  }).select('+password');
 
-  if (isExistEmail) {
+  if (payload.email) {
+    const isExistEmail = await User.findOne({
+      email: {
+        $eq: payload.email,
+        $exists: true,
+        $ne: undefined,
+      },
+      status: 'active',
+    }).select('+password');
     isExistUser = isExistEmail;
-  } else if (isexistPhone) {
+  } else if (payload.phnNum) {
+    const isexistPhone = await User.findOne({
+      phnNum: {
+        $eq: payload.phnNum,
+        $exists: true,
+        $ne: undefined,
+      },
+      status: 'active',
+    }).select('+password');
     isExistUser = isexistPhone;
-  } else {
+  }
+  if (!isExistUser) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
   }
 
-  if (isExistUser.role === 'INFLUENCER' && !isExistUser.verified) {
+  if (
+    isExistUser &&
+    isExistUser.role === 'INFLUENCER' &&
+    !isExistUser.verified
+  ) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
       'Please verify your account, then try to login again'
@@ -95,7 +126,7 @@ const loginUserFromDB = async (payload: ILoginData) => {
   }
 
   // Check user status
-  if (isExistUser.status === 'delete') {
+  if (isExistUser && isExistUser.status === 'delete') {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
       'You don’t have permission to access this content. It looks like your account has been deactivated.'
@@ -124,60 +155,6 @@ const loginUserFromDB = async (payload: ILoginData) => {
 
   return { createToken };
 };
-
-// const loginUserFromDB = async (payload: ILoginData) => {
-//   const { email, password, phnNum } = payload;
-
-//   // Check if user exists by email or phone number
-//   const isExistUser = await User.findOne({
-//     $or: [{ email }, { phnNum }],
-//   }).select('+password');
-
-//   if (!isExistUser) {
-//     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
-//   }
-
-//   console.log(isExistUser);
-
-//   // Check if the user is verified
-//   // if (!isExistUser.verified) {
-//   //   throw new ApiError(
-//   //     StatusCodes.BAD_REQUEST,
-//   //     'Please verify your account, then try to login again'
-//   //   );
-//   // }
-
-//   // Check user status
-//   if (isExistUser.status === 'delete') {
-//     throw new ApiError(
-//       StatusCodes.BAD_REQUEST,
-//       'You don’t have permission to access this content. It looks like your account has been deactivated.'
-//     );
-//   }
-
-//   // Trim whitespace and check if the password matches
-//   const isPasswordCorrect = await User.isMatchPassword(
-//     password.trim(),
-//     isExistUser.password
-//   );
-//   if (!isPasswordCorrect) {
-//     throw new ApiError(StatusCodes.BAD_REQUEST, 'Password is incorrect!');
-//   }
-
-//   // Create token with phnNum included
-//   const createToken = jwtHelper.createToken(
-//     {
-//       id: isExistUser._id,
-//       role: isExistUser.role,
-//       email: isExistUser.email,
-//       phnNum: isExistUser.phnNum,
-//     },
-//     config.jwt.jwt_secret as Secret,
-//     config.jwt.jwt_expire_in as string
-//   );
-
-//   return { createToken };
-// };
 
 const forgetPasswordToDB = async (email: string) => {
   const isExistUser = await User.isExistUserByEmail(email);

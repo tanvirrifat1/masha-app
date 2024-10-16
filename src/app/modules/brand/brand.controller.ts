@@ -10,7 +10,7 @@ const updatedBrand = catchAsync(async (req: Request, res: Response) => {
   const brandData = req.body;
 
   let image = getFilePath(req.files, 'images');
-  console.log(req.files);
+
   const value = {
     image,
     ...req.body,

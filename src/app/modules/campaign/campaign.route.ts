@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { CampaignValidationZodSchema } from './campaign.validation';
 import { CampaignController } from './campaign.controller';
@@ -10,10 +10,24 @@ const router = express.Router();
 
 router.post(
   '/create-campaign',
-  // auth(USER_ROLES.BRAND),
   fileUploadHandler(),
-  // validateRequest(CampaignValidationZodSchema.campaignValidation),
-  CampaignController.createCampaignToDB
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = CampaignValidationZodSchema.campaignValidation.parse(
+      JSON.parse(req.body.data)
+    );
+    return CampaignController.createCampaignToDB(req, res, next);
+  }
+);
+
+router.patch(
+  '/:id',
+  fileUploadHandler(),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = CampaignValidationZodSchema.campaignUpdatedValidation.parse(
+      JSON.parse(req.body.data)
+    );
+    return CampaignController.updateCampaignToDB(req, res, next);
+  }
 );
 
 router.get(
@@ -32,13 +46,6 @@ router.patch(
   '/:id',
   // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
   CampaignController.updatedCampaignStatusToDB
-);
-
-router.patch(
-  '/:id',
-  // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
-  // validateRequest(CampaignValidationZodSchema.campaignUpdatedValidation),
-  CampaignController.updateCampaignToDB
 );
 
 router.delete(

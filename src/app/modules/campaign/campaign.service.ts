@@ -27,7 +27,7 @@ const getAllCampaigns = async (query: Record<string, unknown>) => {
 };
 
 const getSingleCmpaign = async (id: string) => {
-  const result = await Campaign.findById(id);
+  const result = await Campaign.findOne({ _id: id, status: 'active' });
   return result;
 };
 
@@ -47,39 +47,6 @@ const deletedCampaignToDB = async (id: string) => {
   );
   return result;
 };
-
-// const updatedCampaignStatusToDB = async (
-//   id: string,
-//   payload: Partial<ICampaign>
-// ) => {
-//   const camapign = await Campaign.findById(id);
-
-//   if (!camapign) {
-//     throw new Error(`Campaign with ID ${id} not found`);
-//   }
-
-//   const collabrationSatusSatus = await Collaborate.findOneAndUpdate(
-//     { campaign: camapign._id },
-//     { status: 'Completed' },
-//     { new: true }
-//   );
-
-//   if (!collabrationSatusSatus) {
-//     throw new ApiError(StatusCodes.BAD_REQUEST, 'Collaboration not found');
-//   }
-
-//   const result = await Campaign.findByIdAndUpdate(
-//     id,
-//     {
-//       $set: {
-//         typeStatus: 'Accepted',
-//       },
-//     },
-//     { new: true }
-//   );
-
-//   return result;
-// };
 
 const updatedCampaignStatusToDB = async (
   id: string,
