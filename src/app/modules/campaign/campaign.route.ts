@@ -19,17 +19,6 @@ router.post(
   }
 );
 
-router.patch(
-  '/:id',
-  fileUploadHandler(),
-  (req: Request, res: Response, next: NextFunction) => {
-    req.body = CampaignValidationZodSchema.campaignUpdatedValidation.parse(
-      JSON.parse(req.body.data)
-    );
-    return CampaignController.updateCampaignToDB(req, res, next);
-  }
-);
-
 router.get(
   '/',
   // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
@@ -44,6 +33,17 @@ router.get(
 
 router.patch(
   '/:id',
+  fileUploadHandler(),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = CampaignValidationZodSchema.campaignUpdatedValidation.parse(
+      JSON.parse(req.body.data)
+    );
+    return CampaignController.updateCampaignToDB(req, res, next);
+  }
+);
+
+router.put(
+  '/:userId',
   // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
   CampaignController.updatedCampaignStatusToDB
 );

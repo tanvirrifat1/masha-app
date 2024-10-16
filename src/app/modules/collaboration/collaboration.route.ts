@@ -1,12 +1,21 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { CollaborationController } from './collaboration.controller';
+import fileUploadHandler from '../../middlewares/fileUploadHandler';
+import { CollaborationValidation } from './collaboration.validation';
 
 const router = express.Router();
 
 router.post(
   '/create-collaboration',
-  CollaborationController.createCollaborationToDB
+  fileUploadHandler(),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = CollaborationValidation.createCollaboration.parse(
+      JSON.parse(req.body.data)
+    );
+    return CollaborationController.createCollaborationToDB(req, res, next);
+  }
 );
 
 router.get('/', CollaborationController.getAllCollaborations);

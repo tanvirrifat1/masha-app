@@ -14,7 +14,6 @@ import { Category } from '../category/category.model';
 const createCampaignToDB = async (payload: Partial<ICampaign>) => {
   const isCategoryOfBrand = await Brand.findById(payload.brand);
   const isCategoryName = isCategoryOfBrand?.category;
-  console.log(isCategoryName);
 
   const fineCategory = await Category.findOne({ _id: isCategoryName });
 
@@ -240,6 +239,11 @@ const getAllCampaigns = async (
 
 const getSingleCmpaign = async (id: string) => {
   const result = await Campaign.findOne({ _id: id, status: 'active' });
+
+  if (result === null) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'Campaign not found');
+  }
+
   return result;
 };
 

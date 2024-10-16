@@ -92,7 +92,7 @@ const deletedCampaignToDB = catchAsync(async (req: Request, res: Response) => {
 const updatedCampaignStatusToDB = catchAsync(
   async (req: Request, res: Response) => {
     const result = await CampaignService.updatedCampaignStatusToDB(
-      req.params.id,
+      req.params.userId,
       req.body
     );
     sendResponse(res, {

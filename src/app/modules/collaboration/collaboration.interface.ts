@@ -14,5 +14,5 @@ export type ICollaboration = {
   status: ICollaborationStatus;
   instagram: string;
   tiktok?: string;
-  image?: [string];
+  image?: string[];
 };
