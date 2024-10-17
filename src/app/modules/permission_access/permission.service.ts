@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../../errors/ApiError';
-import { emailHelper } from '../../../helpers/emailHelper';
 import { sendEmail } from '../../../helpers/sendMail';
 import { IUser } from '../user/user.interface';
 import { User } from '../user/user.model';
