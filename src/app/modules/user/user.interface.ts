@@ -9,6 +9,7 @@ export type IUser = {
   referralCode?: string;
   password: string;
   status: 'active' | 'delete';
+  loginStatus: 'Approved' | 'Rejected' | 'Pending';
   verified?: boolean;
   image?: string;
   brand?: Types.ObjectId;

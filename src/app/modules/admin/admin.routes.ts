@@ -17,6 +17,7 @@ router.get(
   auth(USER_ROLES.SUPER_ADMIN),
   AdminController.getAdmin
 );
+
 router.delete(
   '/:id',
   auth(USER_ROLES.SUPER_ADMIN),

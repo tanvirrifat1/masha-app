@@ -12,6 +12,7 @@ import { InviteRoutes } from '../app/modules/invite/invite.route';
 import { CollaborationRoutes } from '../app/modules/collaboration/collaboration.route';
 import { FaqRoutes } from '../app/modules/Faq/Faq.route';
 import { ReviewRoutes } from '../app/modules/review/review.route';
+import { PermissonRoutes } from '../app/modules/permission_access/permission.route';
 const router = express.Router();
 
 const apiRoutes = [
@@ -28,6 +29,7 @@ const apiRoutes = [
   { path: '/collaboration', route: CollaborationRoutes },
   { path: '/faq', route: FaqRoutes },
   { path: '/review', route: ReviewRoutes },
+  { path: '/permisson', route: PermissonRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

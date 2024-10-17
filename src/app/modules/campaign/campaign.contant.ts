@@ -7,6 +7,7 @@ export const CampaignSearchAbleFields = [
   'dressCode',
   'brandInstagram',
   'categoryName',
+  'typeStatus',
 ];
 
 export const CampaignFilterableFields = [
@@ -16,6 +17,7 @@ export const CampaignFilterableFields = [
   'gender',
   'dressCode',
   'brandInstagram',
+  'typeStatus',
 ];
 
 export const paginationFields = ['page', 'limit', 'sortBy', 'sortOrder'];

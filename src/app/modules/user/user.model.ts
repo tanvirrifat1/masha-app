@@ -51,6 +51,11 @@ const userSchema = new Schema<IUser, UserModal>(
       type: Schema.Types.ObjectId,
       ref: 'Influencer',
     },
+    loginStatus: {
+      type: String,
+      enum: ['Approved', 'Rejected', 'Pending'],
+      default: 'Pending',
+    },
     authentication: {
       type: {
         isResetPassword: {
