@@ -14,11 +14,15 @@ const createTermsToDB = async (payload: Partial<ITermsAndCondition>) => {
       return newTerm;
     }
   } catch (error) {
-    console.error('Error creating or updating terms:', error);
     throw new Error('Unable to create or update terms.');
   }
+};
+const getTermsFromDB = async () => {
+  const terms = await Terms.find();
+  return terms;
 };
 
 export const TermsAndConditionService = {
   createTermsToDB,
+  getTermsFromDB,
 };
