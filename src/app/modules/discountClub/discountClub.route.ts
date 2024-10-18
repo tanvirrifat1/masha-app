@@ -21,7 +21,7 @@ router.post(
 
 router.get(
   '/',
-  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
   DiscountClubController.getAllDiscount
 );
 

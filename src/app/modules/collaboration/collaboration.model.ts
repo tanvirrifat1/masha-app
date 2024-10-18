@@ -21,10 +21,18 @@ const collaborateSchema = new Schema<ICollaboration>(
     tiktok: {
       type: String,
     },
-    status: {
+    categoryName: {
+      type: String,
+    },
+    typeStatus: {
       type: String,
       enum: inviteStatus,
       default: 'Pending',
+    },
+    status: {
+      type: String,
+      enum: ['active', 'deleted'],
+      default: 'active',
     },
   },
   {
@@ -33,8 +41,8 @@ const collaborateSchema = new Schema<ICollaboration>(
 );
 
 collaborateSchema.pre('save', function (next) {
-  if (this.status === 'Pending') {
-    this.status = 'Review';
+  if (this.typeStatus === 'Pending') {
+    this.typeStatus = 'Review';
   }
   next();
 });

@@ -6,3 +6,10 @@ export const inviteStatus = [
   'Review',
   'Completed',
 ];
+
+export const collaboratationSearchAbleFields = [
+  'categoryName',
+  'instagram',
+  'tiktok',
+  'typeStatus',
+];

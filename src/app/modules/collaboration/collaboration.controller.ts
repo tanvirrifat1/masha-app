@@ -26,7 +26,12 @@ const createCollaborationToDB = catchAsync(
 );
 
 const getAllCollaborations = catchAsync(async (req: Request, res: Response) => {
-  const result = await CollaborationService.getAllCollaborations(req.query);
+  const filter = req.body;
+  const result = await CollaborationService.getAllCollaborations(
+    req.query,
+    filter
+  );
+  console.log(result);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,

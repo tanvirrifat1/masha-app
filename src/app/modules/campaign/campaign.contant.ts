@@ -18,6 +18,7 @@ export const CampaignFilterableFields = [
   'dressCode',
   'brandInstagram',
   'typeStatus',
+  'categoryName',
 ];
 
 export const paginationFields = ['page', 'limit', 'sortBy', 'sortOrder'];

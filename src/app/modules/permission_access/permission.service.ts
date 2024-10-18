@@ -43,12 +43,17 @@ const updatedUserLoginStatus = async (id: string, payload: Partial<IUser>) => {
       `
           <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
             <p>Dear ${result.fullName},</p>
-            <p><strong>Email:</strong> ${result.email}</p>
+            <p><strong>Email:</strong> ${result.email}</p>           
+             <p>${
+               result.loginStatus === 'Approved'
+                 ? 'Your information is valid.'
+                 : 'Your information is not valid.'
+             }</p>           
             <p>${
               result.loginStatus === 'Approved'
                 ? 'Thank you for joining us!.'
                 : "Sorry you can't join with us."
-            }</p>
+            }</p>          
           </div>
         `
     );

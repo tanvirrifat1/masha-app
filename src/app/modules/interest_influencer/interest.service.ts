@@ -105,7 +105,7 @@ const updatedInterestStautsToDb = async (
       collaborationId,
       {
         $set: {
-          status: 'Completed',
+          typeStatus: 'Completed',
         },
       },
       {
@@ -120,7 +120,7 @@ const updatedInterestStautsToDb = async (
       collaborationId,
       {
         $set: {
-          status: 'Rejected',
+          typeStatus: 'Rejected',
         },
       },
       {
