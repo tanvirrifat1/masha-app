@@ -119,7 +119,6 @@ export async function sendEmail(email: string, subject: string, text: string) {
 
     return info;
   } catch (error) {
-    console.error('Error sending email:', error);
     throw new ApiError(
       StatusCodes.INTERNAL_SERVER_ERROR,
       'Error sending email'

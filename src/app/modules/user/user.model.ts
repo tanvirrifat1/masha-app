@@ -42,7 +42,9 @@ const userSchema = new Schema<IUser, UserModal>(
       type: Boolean,
       default: false,
     },
-
+    image: {
+      type: String,
+    },
     brand: {
       type: Schema.Types.ObjectId,
       ref: 'Brand',

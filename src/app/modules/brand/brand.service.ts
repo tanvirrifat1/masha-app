@@ -19,8 +19,14 @@ const updateBrandToDB = async (id: string, payload: Partial<IBrand>) => {
   return result;
 };
 
-const getAllBrands = async (query: Record<string, unknown>) => {
-  const brandQuery = new QueryBuilder(Brand.find().populate('category'), query)
+const getAllBrands = async (
+  query: Record<string, unknown>,
+  filter: Record<string, any>
+) => {
+  const brandQuery = new QueryBuilder(
+    Brand.find(filter).populate('category'),
+    query
+  )
     .search(brandSearchAbleFields)
     .filter()
     .sort()

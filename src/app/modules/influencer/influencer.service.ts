@@ -29,8 +29,12 @@ const updateInfluencerToDB = async (
   return result;
 };
 
-const getAllInfluencer = async (query: Record<string, unknown>) => {
-  const influencerQuery = new QueryBuilder(Influencer.find(), query)
+const getAllInfluencer = async (
+  query: Record<string, unknown>,
+  filter: Record<string, any>
+) => {
+  console.log(query);
+  const influencerQuery = new QueryBuilder(Influencer.find(filter), query)
     .search(InfluencerSearchAbleFields)
     .filter()
     .sort()

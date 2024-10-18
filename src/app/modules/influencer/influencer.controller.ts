@@ -54,7 +54,9 @@ const updatedInfluencer = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllInfluencer = catchAsync(async (req: Request, res: Response) => {
-  const result = await InfluencerService.getAllInfluencer(req.query);
+  const filter = req.body;
+
+  const result = await InfluencerService.getAllInfluencer(req.query, filter);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,

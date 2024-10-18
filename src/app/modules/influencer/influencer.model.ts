@@ -45,6 +45,11 @@ const influencerShema = new Schema<IInfluencer>(
     tiktok: {
       type: String,
     },
+    status: {
+      type: String,
+      enum: ['active', 'delete'],
+      default: 'active',
+    },
   },
   {
     timestamps: true,

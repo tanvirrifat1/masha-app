@@ -25,7 +25,9 @@ const updatedBrand = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllBrands = catchAsync(async (req: Request, res: Response) => {
-  const result = await BrandService.getAllBrands(req.query);
+  const filter = req.body;
+
+  const result = await BrandService.getAllBrands(req.query, filter);
 
   sendResponse(res, {
     success: true,

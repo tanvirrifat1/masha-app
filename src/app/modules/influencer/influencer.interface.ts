@@ -16,6 +16,7 @@ export type IInfluencer = {
   country: string;
   city: string;
   zip?: number;
+  status: 'active' | 'delete';
 };
 
 export type InfluencerModel = {} & Model<IInfluencer>;
