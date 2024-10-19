@@ -19,6 +19,8 @@ router.post(
   }
 );
 
+router.post('/:id/payment', DiscountClubController.createPaymentIntent);
+
 router.get(
   '/',
   // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),

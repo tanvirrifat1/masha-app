@@ -8,14 +8,15 @@ const dateStringSchema = z.string().refine(
     return regex.test(date);
   },
   {
-    message:
-      'Invalid date format, expected "DD MMM YYYY" (e.g., "25 Aug 2024")',
+    message: `Invalid date format, expected "DD MMM YYYY" (e.g., "25 Aug 2024")`,
   }
 );
 
 const createDiscountClubValidation = z
   .object({
     name: z.string({ required_error: 'Name is Required' }),
+    buyGuide: z.string({ required_error: 'BuyGuide is Required' }),
+    brand: z.string().optional(),
     startTime: dateStringSchema,
     endTime: dateStringSchema,
     price: z.string({ required_error: 'Price is required' }),
@@ -37,6 +38,8 @@ const createDiscountClubValidation = z
 const updatedDiscountClubValidation = z
   .object({
     name: z.string().optional(),
+    brand: z.string().optional(),
+    buyGuide: z.string().optional(),
     startTime: dateStringSchema,
     endTime: dateStringSchema,
     price: z.string().optional(),

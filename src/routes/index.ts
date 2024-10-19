@@ -15,6 +15,7 @@ import { ReviewRoutes } from '../app/modules/review/review.route';
 import { PermissonRoutes } from '../app/modules/permission_access/permission.route';
 import { TermsAndConditionRoutes } from '../app/modules/termsAndCondition/termsAndCondition.route';
 import { InterestRoutes } from '../app/modules/interest_influencer/interest.route';
+import { SubscriptionRoutes } from '../app/modules/subscribtion/subscribtion.route';
 const router = express.Router();
 
 const apiRoutes = [
@@ -34,6 +35,7 @@ const apiRoutes = [
   { path: '/permisson', route: PermissonRoutes },
   { path: '/terms', route: TermsAndConditionRoutes },
   { path: '/interest-influencer', route: InterestRoutes },
+  { path: '/subscribtion', route: SubscriptionRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));
