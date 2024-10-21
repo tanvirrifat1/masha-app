@@ -1,50 +1,68 @@
 import { Request, Response } from 'express';
-import subscriptionService from './subscribtion.service';
+import { subscriptionService } from './subscribtion.service';
+import catchAsync from '../../../shared/catchAsync';
+import sendResponse from '../../../shared/sendResponse';
+import { StatusCodes } from 'http-status-codes';
 
-const subscriptionController = {
-  subscribe: async (req: Request, res: Response) => {
-    const plan = req.query.plan as string;
+const createSession = catchAsync(async (req: Request, res: Response) => {
+  const { plan } = req.query; // Destructure plan from req.body
 
-    if (!plan) {
-      return res.status(400).send('Subscribe plan not found');
-    }
+  if (!plan) {
+    return res.status(400).send('Plan is required');
+  }
 
-    try {
-      const sessionUrl = await subscriptionService.createCheckoutSession(plan);
-      console.log(sessionUrl);
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  },
-  success: async (req: Request, res: Response) => {
-    const session = await subscriptionService.retrieveSession(
-      req.query.session_id as string
-    );
-    console.log(JSON.stringify(session));
-    res.send('Subscribed successfully');
-  },
-  cancel: (req: Request, res: Response) => {
-    res.redirect('/');
-  },
-  redirectToPortal: async (req: Request, res: Response) => {
-    const portalUrl = await subscriptionService.createBillingPortalSession(
-      req.params.id
-    );
-    res.redirect(portalUrl);
-  },
-  handleWebhook: async (req: Request, res: Response) => {
-    const sig = req.headers['stripe-signature'] as string;
+  const result = await subscriptionService.createCheckoutSession(
+    plan.toLowerCase() // Now this will work as plan is a string
+  );
 
-    let event;
-    try {
-      event = subscriptionService.constructEvent(req.body, sig);
-    } catch (error) {
-      throw new Error(error as string);
-    }
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Subscription created successfully',
+    data: result,
+  });
+});
 
-    await subscriptionService.handleWebhook(event);
-    res.sendStatus(200);
-  },
+const Success = catchAsync(async (req: Request, res: Response) => {
+  const result = await subscriptionService.retrieveSession(
+    req.params.id as string
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Subscription successful',
+    data: result,
+  });
+});
+
+const customerPortal = catchAsync(async (req: Request, res: Response) => {
+  const result = await subscriptionService.createBillingPortal(
+    req.params.id as string
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'createBillingPortal successful',
+    data: result,
+  });
+});
+
+const webhookHandler = catchAsync(async (req: Request, res: Response) => {
+  const result = await subscriptionService.handleWebhook(req.body);
+  console.log({ result });
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'webhookHandler successful',
+    data: result,
+  });
+});
+
+export const SubscriptionController = {
+  createSession,
+  Success,
+  customerPortal,
+  webhookHandler,
 };
-
-export default subscriptionController;

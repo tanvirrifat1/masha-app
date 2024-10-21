@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.patch(
   '/:id',
-
   fileUploadHandler(),
 
   (req: Request, res: Response, next: NextFunction) => {

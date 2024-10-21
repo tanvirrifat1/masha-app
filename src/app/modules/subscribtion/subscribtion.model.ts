@@ -12,6 +12,9 @@ const subscribationSchema = new Schema<ISubscribtion>(
     plan: {
       type: String,
     },
+    subscriptionId: {
+      type: String,
+    },
   },
   {
     timestamps: true,
