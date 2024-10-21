@@ -10,6 +10,14 @@ export type ILoginData = {
   loginStatus?: string;
 };
 
+export type IRefreshToken = {
+  refreshToken?: string;
+  id: string;
+  role: string;
+  email: string;
+  phnNum: string;
+};
+
 export type IAuthResetPassword = {
   newPassword: string;
   confirmPassword: string;

@@ -30,6 +30,8 @@ router.post(
   AuthController.resetPassword
 );
 
+router.post('/refresh-token', AuthController.refreshToken);
+
 router.post(
   '/change-password',
   auth(

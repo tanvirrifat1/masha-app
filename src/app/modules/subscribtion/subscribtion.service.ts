@@ -10,7 +10,7 @@ export const stripe = new Stripe(config.stripe_secret_key as string, {
 });
 const createCheckoutSession = async (plan: string) => {
   let priceId: string;
-  console.log(plan);
+
   switch (plan) {
     case 'silver':
       priceId = 'price_1QCEkrLMVhw2FMhmSk9vFt8I';
@@ -79,36 +79,51 @@ const handleWebhook = async (event: any) => {
   }
 };
 
-// const handleWebhook = async (event: any) => {
-//   console.log(event, 'eventssssssssss');
-//   switch (event.type) {
-//     case 'checkout.session.completed':
-//       const paymentIntent = event.data;
-//       console.log(paymentIntent);
-//       break;
-//     case 'invoice.payment_succeeded':
-//       const invoice = event.data;
-//       console.log(invoice);
-//       break;
-//     case 'invoice.payment_failed':
-//       const paymentInvoice = event.data;
-//       console.log(paymentInvoice);
-//       break;
-//     case 'customer.subscription.created':
-//     case 'customer.subscription.updated':
-//     case 'customer.subscription.deleted':
-//       const subscription = event.data;
-//       console.log(subscription);
-//       break;
-//     default:
-//       console.log('Unhandled event type: ', event.type);
-//       break;
-//   }
-// };
+// subscription.service.ts
+
+const createCustomerAndSubscription = async (
+  email: string,
+  priceId: string
+) => {
+  // Create customer
+  const customer = await stripe.customers.create({
+    email,
+  });
+
+  // Create subscription
+  const subscription = await stripe.subscriptions.create({
+    customer: customer.id,
+    items: [{ price: priceId }],
+    payment_behavior: 'default_incomplete',
+    expand: ['latest_invoice.payment_intent'],
+  });
+
+  // Check if latest_invoice exists and is of type Invoice
+  const latestInvoice = subscription.latest_invoice;
+
+  if (!latestInvoice || typeof latestInvoice === 'string') {
+    throw new Error(
+      'Failed to create subscription; latest_invoice is missing or is invalid.'
+    );
+  }
+
+  // Check if payment_intent exists and is of type PaymentIntent
+  const paymentIntent = latestInvoice.payment_intent;
+
+  if (!paymentIntent || typeof paymentIntent === 'string') {
+    throw new Error('Failed to retrieve payment intent from latest_invoice.');
+  }
+
+  return {
+    subscriptionId: subscription.id,
+    clientSecret: paymentIntent.client_secret, // Safely access client_secret
+  };
+};
 
 export const subscriptionService = {
   createCheckoutSession,
   retrieveSession,
   createBillingPortal,
   handleWebhook,
+  createCustomerAndSubscription,
 };

@@ -15,6 +15,14 @@ const subscribationSchema = new Schema<ISubscribtion>(
     subscriptionId: {
       type: String,
     },
+
+    priceAmount: {
+      type: Number,
+    },
+    brand: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
   {
     timestamps: true,

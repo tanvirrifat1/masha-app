@@ -60,9 +60,36 @@ const webhookHandler = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// subscribtion.controller.ts
+
+const createSubscription = catchAsync(async (req: Request, res: Response) => {
+  const { email, priceId } = req.body;
+
+  if (!email || !priceId) {
+    return res.status(400).send('Email and Price ID are required');
+  }
+
+  try {
+    const result = await subscriptionService.createCustomerAndSubscription(
+      email,
+      priceId
+    );
+
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: 'Subscription created successfully',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+});
+
 export const SubscriptionController = {
   createSession,
   Success,
   customerPortal,
   webhookHandler,
+  createSubscription,
 };

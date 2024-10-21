@@ -26,4 +26,8 @@ export type UserModal = {
   isExistUserByEmail(email: string): any;
   isExistUserByPhnNum(phnNum: string): any;
   isMatchPassword(password: string, hashPassword: string): boolean;
+  isJWTIssuedBeforePasswordChanged(
+    passwordChangedTimestamp: Date,
+    jwtIssuedTimestamp: number
+  ): boolean;
 } & Model<IUser>;

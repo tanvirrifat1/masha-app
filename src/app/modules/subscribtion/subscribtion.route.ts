@@ -5,6 +5,7 @@ import { SubscriptionController } from './subscribtion.controller';
 
 const router = Router();
 
+router.post('/subscribe', SubscriptionController.createSubscription);
 router.post(
   '/allHooks',
   express.raw({ type: 'application/json' }),
