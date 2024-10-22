@@ -10,7 +10,6 @@ import {
   IAuthResetPassword,
   IChangePassword,
   ILoginData,
-  IRefreshToken,
   IVerifyEmail,
 } from '../../../types/auth';
 import cryptoToken from '../../../util/cryptoToken';
@@ -18,145 +17,6 @@ import generateOTP from '../../../util/generateOTP';
 import { ResetToken } from '../resetToken/resetToken.model';
 import { User } from '../user/user.model';
 import jwt from 'jsonwebtoken';
-
-// const loginUserFromDB = async (payload: ILoginData) => {
-//   const { password } = payload;
-
-//   let isExistUser;
-//   // Check if the user exists by email or phone number
-//   const isExistEmail = await User.findOne({
-//     email: {
-//       $eq: payload.email,
-//       $exists: true,
-//       $ne: undefined,
-//     },
-//   }).select('+password');
-//   const isexistPhone = await User.findOne({
-//     phnNum: {
-//       $eq: payload.phnNum,
-//       $exists: true,
-//       $ne: undefined,
-//     },
-//   }).select('+password');
-
-//   if (isExistEmail) {
-//     isExistUser = isExistEmail;
-//   } else if (isexistPhone) {
-//     isExistUser = isexistPhone;
-//   } else {
-//     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
-//   }
-
-//   if (isExistUser.role === 'INFLUENCER' && !isExistUser.verified) {
-//     throw new ApiError(
-//       StatusCodes.BAD_REQUEST,
-//       'Please verify your account, then try to login again'
-//     );
-//   }
-
-//   // Check user status
-//   if (isExistUser.status === 'delete') {
-//     throw new ApiError(
-//       StatusCodes.BAD_REQUEST,
-//       'You don’t have permission to access this content. It looks like your account has been deactivated.'
-//     );
-//   }
-
-//   // Check password match
-//   if (
-//     password &&
-//     !(await User.isMatchPassword(password, isExistUser.password))
-//   ) {
-//     throw new ApiError(StatusCodes.BAD_REQUEST, 'Password is incorrect!');
-//   }
-
-//   // Create token
-//   const createToken = jwtHelper.createToken(
-//     {
-//       id: isExistUser._id,
-//       role: isExistUser.role,
-//       email: isExistUser.email,
-//       phnNum: isExistUser.phnNum,
-//     },
-//     config.jwt.jwt_secret as Secret,
-//     config.jwt.jwt_expire_in as string
-//   );
-
-//   return { createToken };
-// };
-
-// const loginUserFromDB = async (payload: ILoginData) => {
-//   const { password } = payload;
-
-//   let isExistUser;
-//   // Check if the user exists by email or phone number
-
-//   if (payload.email) {
-//     const isExistEmail = await User.findOne({
-//       email: {
-//         $eq: payload.email,
-//         $exists: true,
-//         $ne: undefined,
-//       },
-//       status: 'active',
-//     }).select('+password');
-//     isExistUser = isExistEmail;
-//   } else if (payload.phnNum) {
-//     const isexistPhone = await User.findOne({
-//       phnNum: {
-//         $eq: payload.phnNum,
-//         $exists: true,
-//         $ne: undefined,
-//       },
-//       status: 'active',
-//     }).select('+password');
-//     isExistUser = isexistPhone;
-//   }
-//   if (!isExistUser) {
-//     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
-//   }
-
-//   if (
-//     isExistUser &&
-//     isExistUser.role === 'INFLUENCER' &&
-//     !isExistUser.verified
-//   ) {
-//     throw new ApiError(
-//       StatusCodes.BAD_REQUEST,
-//       'Please verify your account, then try to login again'
-//     );
-//   }
-
-//   // Check user status
-//   if (isExistUser && isExistUser.status === 'delete') {
-//     throw new ApiError(
-//       StatusCodes.BAD_REQUEST,
-//       'You don’t have permission to access this content. It looks like your account has been deactivated.'
-//     );
-//   }
-
-//   // Check password match
-//   if (
-//     password &&
-//     !(await User.isMatchPassword(password, isExistUser.password))
-//   ) {
-//     throw new ApiError(StatusCodes.BAD_REQUEST, 'Password is incorrect!');
-//   }
-
-//   // Create token
-//   const createToken = jwtHelper.createToken(
-//     {
-//       id: isExistUser._id,
-//       role: isExistUser.role,
-//       email: isExistUser.email,
-//       phnNum: isExistUser.phnNum,
-//     },
-//     config.jwt.jwt_secret as Secret,
-//     config.jwt.jwt_expire_in as string
-//   );
-
-//   return { createToken };
-// };
 
 const loginUserFromDB = async (payload: ILoginData) => {
   const { password } = payload;
@@ -233,7 +93,6 @@ const loginUserFromDB = async (payload: ILoginData) => {
       id: isExistUser._id,
       role: isExistUser.role,
       email: isExistUser.email,
-      phnNum: isExistUser.phnNum,
     },
     config.jwt.jwt_secret as Secret,
     config.jwt.jwt_expire_in as string
@@ -245,13 +104,11 @@ const loginUserFromDB = async (payload: ILoginData) => {
       id: isExistUser._id,
       role: isExistUser.role,
       email: isExistUser.email,
-      phnNum: isExistUser.phnNum,
     },
-    config.jwt.jwt_refresh_secret || ('default_secret' as Secret), // Use a different secret for the refresh token
-    config.jwt.jwt_refresh_expire_in || ('7d' as string) // Set a longer expiry for the refresh token
+    config.jwt.jwt_refresh_secret || ('default_secret' as Secret),
+    config.jwt.jwt_refresh_expire_in || ('7d' as string)
   );
 
-  // Optionally, store the refresh token in the database (in the user model, or a separate refresh tokens collection)
   await User.updateOne({ _id: isExistUser._id }, { refreshToken });
 
   return { accessToken, refreshToken };

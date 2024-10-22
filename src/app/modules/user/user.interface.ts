@@ -5,7 +5,6 @@ export type IUser = {
   role: USER_ROLES;
   fullName: string;
   email?: string;
-  phnNum?: string;
   referralCode?: string;
   password: string;
   status: 'active' | 'delete';
