@@ -1,22 +1,29 @@
-import express from 'express';
-import validateRequest from '../../middlewares/validateRequest';
+import express, { NextFunction, Request, Response } from 'express';
 import auth from '../../middlewares/auth';
 import { USER_ROLES } from '../../../enums/user';
-import { DiscountClubValidation } from './discountClub.validation';
 import { DiscountClubController } from './discountClub.controller';
+import fileUploadHandler from '../../middlewares/fileUploadHandler';
+import { DiscountClubValidation } from './discountClub.validation';
 
 const router = express.Router();
 
 router.post(
   '/create-discount',
-  auth(USER_ROLES.BRAND),
-  validateRequest(DiscountClubValidation.createDiscountClubValidation),
-  DiscountClubController.createDiscountClubToDB
+  // auth(USER_ROLES.BRAND),
+  fileUploadHandler(),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = DiscountClubValidation.createDiscountClubValidation.parse(
+      JSON.parse(req.body.data)
+    );
+    return DiscountClubController.createDiscountClubToDB(req, res, next);
+  }
 );
+
+router.post('/:id/payment', DiscountClubController.createPaymentIntent);
 
 router.get(
   '/',
-  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
   DiscountClubController.getAllDiscount
 );
 
@@ -28,9 +35,14 @@ router.get(
 
 router.patch(
   '/:id',
-  auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
-  validateRequest(DiscountClubValidation.updatedDiscountClubValidation),
-  DiscountClubController.updateCampaignToDB
+  // auth(USER_ROLES.BRAND, USER_ROLES.ADMIN),
+  fileUploadHandler(),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = DiscountClubValidation.updatedDiscountClubValidation.parse(
+      JSON.parse(req.body.data)
+    );
+    return DiscountClubController.updateCampaignToDB(req, res, next);
+  }
 );
 
 router.delete(

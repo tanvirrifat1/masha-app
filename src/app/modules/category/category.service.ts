@@ -32,7 +32,12 @@ const getAllCategory = async (query: Record<string, unknown>) => {
 };
 
 const getSingleCategory = async (id: string) => {
-  const result = await Category.findById(id);
+  const result = await Category.findOne({ _id: id, status: 'active' });
+
+  if (!result === null) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'Category not found');
+  }
+
   return result;
 };
 
@@ -42,13 +47,26 @@ const updateCategoryToDB = async (id: string, payload: Partial<ICategory>) => {
   });
 
   if (isCategoryExist) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Category already exist');
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Category already exists');
+  }
+
+  const category = await Category.findById(id);
+  if (!category) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'Category not found');
+  }
+
+  if (category.status !== 'active') {
+    throw new ApiError(
+      StatusCodes.FORBIDDEN,
+      'Category is not active, cannot be updated'
+    );
   }
 
   const result = await Category.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
   });
+
   return result;
 };
 

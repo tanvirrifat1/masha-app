@@ -3,11 +3,18 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { AdminService } from './admin.service';
+import getFilePath from '../../../shared/getFilePath';
 
 const createAdmin = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
-  const result = await AdminService.createAdminToDB(payload);
+  let image = getFilePath(req.files, 'images');
+  const value = {
+    image,
+    ...payload,
+  };
+
+  const result = await AdminService.createAdminToDB(value);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,

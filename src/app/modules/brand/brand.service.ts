@@ -9,15 +9,24 @@ import { brandSearchAbleFields } from './brand.constant';
 import { JwtPayload } from 'jsonwebtoken';
 
 const updateBrandToDB = async (id: string, payload: Partial<IBrand>) => {
+  payload.status = 'active';
   const result = await Brand.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
   });
+
+  console.log(result);
   return result;
 };
 
-const getAllBrands = async (query: Record<string, unknown>) => {
-  const brandQuery = new QueryBuilder(Brand.find().populate('category'), query)
+const getAllBrands = async (
+  query: Record<string, unknown>,
+  filter: Record<string, any>
+) => {
+  const brandQuery = new QueryBuilder(
+    Brand.find(filter).populate('category'),
+    query
+  )
     .search(brandSearchAbleFields)
     .filter()
     .sort()

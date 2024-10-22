@@ -7,10 +7,9 @@ import getFilePath from '../../../shared/getFilePath';
 
 const updatedBrand = catchAsync(async (req: Request, res: Response) => {
   const brandId = req.params.id;
-  const brandData = req.body;
 
   let image = getFilePath(req.files, 'images');
-  console.log(req.files);
+
   const value = {
     image,
     ...req.body,
@@ -26,7 +25,10 @@ const updatedBrand = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllBrands = catchAsync(async (req: Request, res: Response) => {
-  const result = await BrandService.getAllBrands(req.query);
+  const filter = req.body;
+
+  const result = await BrandService.getAllBrands(req.query, filter);
+
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,

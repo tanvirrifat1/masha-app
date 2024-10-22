@@ -14,9 +14,6 @@ const collaborateSchema = new Schema<ICollaboration>(
     },
     image: {
       type: [String],
-      default: [
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-      ],
     },
     instagram: {
       type: String,
@@ -24,10 +21,18 @@ const collaborateSchema = new Schema<ICollaboration>(
     tiktok: {
       type: String,
     },
-    status: {
+    categoryName: {
+      type: String,
+    },
+    typeStatus: {
       type: String,
       enum: inviteStatus,
       default: 'Pending',
+    },
+    status: {
+      type: String,
+      enum: ['active', 'deleted'],
+      default: 'active',
     },
   },
   {
@@ -36,8 +41,8 @@ const collaborateSchema = new Schema<ICollaboration>(
 );
 
 collaborateSchema.pre('save', function (next) {
-  if (this.status === 'Pending') {
-    this.status = 'Review';
+  if (this.typeStatus === 'Pending') {
+    this.typeStatus = 'Review';
   }
   next();
 });

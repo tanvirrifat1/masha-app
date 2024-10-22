@@ -3,6 +3,9 @@ import express, { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import router from './routes';
+
+import cookieParser from 'cookie-parser';
+
 import { Morgan } from './shared/morgen';
 const app = express();
 
@@ -13,6 +16,7 @@ app.use(Morgan.errorHandler);
 //body parser
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 //file retrieve

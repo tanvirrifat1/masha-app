@@ -29,7 +29,7 @@ const getAllInvites = async (query: Record<string, unknown>) => {
   return result;
 };
 
-const updatedInviteToDB = async (id: string) => {
+const updatedInviteToDB = async (id: string, payload: Partial<IInvite>) => {
   const invite = await Invite.findById(id);
 
   if (!invite) {
@@ -40,8 +40,7 @@ const updatedInviteToDB = async (id: string) => {
     id,
     {
       $set: {
-        status: 'Accepted',
-        // influencer: invite.influencer, // Use invite.influencer here
+        status: payload.status,
       },
     },
     { new: true }

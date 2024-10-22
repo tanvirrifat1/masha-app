@@ -7,13 +7,13 @@ import { UserService } from './user.service';
 const createBrandToDB = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { ...brandData } = req.body;
-    const result = await UserService.createBrandToDB(brandData);
+    await UserService.createBrandToDB(brandData);
 
     sendResponse(res, {
       success: true,
       statusCode: StatusCodes.OK,
-      message: 'Brand created successfully',
-      data: result,
+      message:
+        'Please check your email to verify your account. We have sent you an OTP to complete the registration process.',
     });
   }
 );
@@ -32,23 +32,9 @@ const createInfluencer = catchAsync(
   }
 );
 
-// const createEmployer = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { ...employerData } = req.body;
-//     await UserService.createEmployerToDB(employerData);
-
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: StatusCodes.OK,
-//       message:
-//         'Please check your email to verify your account. We have sent you an OTP to complete the registration process.',
-//     });
-//   }
-// );
-
 const getUserProfile = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
-  console.log(user,'sadsa');
+
   const result = await UserService.getUserProfileFromDB(user);
 
   sendResponse(res, {

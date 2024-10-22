@@ -42,16 +42,4 @@ router.get(
   UserController.getUserProfile
 );
 
-// router
-//   .route('/create-employer')
-//   .post(
-//     validateRequest(UserValidation.createUserZodSchema),
-//     UserController.createProvider
-//   )
-//   .patch(
-//     auth(USER_ROLES.ADMIN),
-//     fileUploadHandler(),
-//     UserController.updateProfile
-//   );
-
 export const UserRoutes = router;

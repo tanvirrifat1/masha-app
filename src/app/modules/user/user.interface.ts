@@ -5,10 +5,10 @@ export type IUser = {
   role: USER_ROLES;
   fullName: string;
   email?: string;
-  phnNum?: string;
   referralCode?: string;
   password: string;
   status: 'active' | 'delete';
+  loginStatus: 'Approved' | 'Rejected' | 'Pending';
   verified?: boolean;
   image?: string;
   brand?: Types.ObjectId;
@@ -25,4 +25,8 @@ export type UserModal = {
   isExistUserByEmail(email: string): any;
   isExistUserByPhnNum(phnNum: string): any;
   isMatchPassword(password: string, hashPassword: string): boolean;
+  isJWTIssuedBeforePasswordChanged(
+    passwordChangedTimestamp: Date,
+    jwtIssuedTimestamp: number
+  ): boolean;
 } & Model<IUser>;

@@ -15,6 +15,7 @@ export type IBrand = {
   manager: string;
   instagram: string;
   tiktok?: string;
+  status: 'active' | 'delete';
 };
 
 export type BrandModel = {} & Model<IBrand>;

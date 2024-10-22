@@ -26,9 +26,7 @@ const userSchema = new Schema<IUser, UserModal>(
       select: 0,
       minlength: 8,
     },
-    phnNum: {
-      type: String,
-    },
+
     referralCode: {
       type: String,
     },
@@ -42,7 +40,9 @@ const userSchema = new Schema<IUser, UserModal>(
       type: Boolean,
       default: false,
     },
-
+    image: {
+      type: String,
+    },
     brand: {
       type: Schema.Types.ObjectId,
       ref: 'Brand',
@@ -50,6 +50,11 @@ const userSchema = new Schema<IUser, UserModal>(
     influencer: {
       type: Schema.Types.ObjectId,
       ref: 'Influencer',
+    },
+    loginStatus: {
+      type: String,
+      enum: ['Approved', 'Rejected', 'Pending'],
+      default: 'Pending',
     },
     authentication: {
       type: {

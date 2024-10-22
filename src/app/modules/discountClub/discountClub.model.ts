@@ -7,13 +7,19 @@ const discountClubSchema = new Schema<IDiscountClub>(
   {
     image: {
       type: String,
-      default:
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+    },
+    brand: {
+      type: Schema.Types.ObjectId,
+      ref: 'Brand',
     },
     name: {
       type: String,
       required: true,
       trim: true,
+    },
+    buyGuide: {
+      type: String,
+      required: true,
     },
     startTime: {
       type: String,

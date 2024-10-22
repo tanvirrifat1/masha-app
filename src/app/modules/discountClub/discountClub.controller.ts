@@ -8,9 +8,7 @@ import { DiscountClubService } from './discountClub.service';
 
 const createDiscountClubToDB = catchAsync(
   async (req: Request, res: Response) => {
-    let image =
-      getFilePath(req.files, 'images') ||
-      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'; // Default image
+    let image = getFilePath(req.files, 'images');
     const value = {
       image,
       ...req.body,
@@ -25,6 +23,23 @@ const createDiscountClubToDB = catchAsync(
     });
   }
 );
+
+// create payment for stripe
+const createPaymentIntent = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params; // DiscountClub ID
+  const { email } = req.body; // User's email from the request body
+
+  const paymentIntent = await DiscountClubService.createPaymentIntent(
+    id,
+    email
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Payment intent created successfully',
+    data: { clientSecret: paymentIntent.client_secret },
+  });
+});
 
 const getAllDiscount = catchAsync(async (req: Request, res: Response) => {
   const result = await DiscountClubService.getAllDiscount(req.query);
@@ -75,4 +90,5 @@ export const DiscountClubController = {
   getSingleDiscount,
   updateCampaignToDB,
   deletedCampaignToDB,
+  createPaymentIntent,
 };

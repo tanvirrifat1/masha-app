@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { AuthService } from './auth.service';
+import config from '../../../config';
 
 const verifyEmail = catchAsync(async (req: Request, res: Response) => {
   const { ...verifyData } = req.body;
@@ -20,11 +21,19 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
   const result = await AuthService.loginUserFromDB(loginData);
 
+  res.cookie('refreshToken', result.refreshToken, {
+    secure: config.node_env === 'production',
+    httpOnly: true,
+  });
+
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,
     message: 'User login successfully',
-    data: result.createToken,
+    data: {
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+    },
   });
 });
 
@@ -65,10 +74,24 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const refreshToken = catchAsync(async (req: Request, res: Response) => {
+  const { refreshToken } = req.cookies;
+
+  const result = await AuthService.refreshAccessToken(refreshToken);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Refreshed access token successfully',
+    data: result,
+  });
+});
+
 export const AuthController = {
   verifyEmail,
   loginUser,
   forgetPassword,
   resetPassword,
   changePassword,
+  refreshToken,
 };

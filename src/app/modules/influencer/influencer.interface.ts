@@ -2,12 +2,6 @@ import { Model } from 'mongoose';
 
 export type IGender = 'male' | 'female' | 'other';
 
-export type TImage = {
-  image1: string;
-  image2: string;
-  image3: string;
-};
-
 export type IInfluencer = {
   image: string[];
   instagram: string;
@@ -22,6 +16,7 @@ export type IInfluencer = {
   country: string;
   city: string;
   zip?: number;
+  status: 'active' | 'delete';
 };
 
 export type InfluencerModel = {} & Model<IInfluencer>;

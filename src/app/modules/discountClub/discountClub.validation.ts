@@ -8,58 +8,55 @@ const dateStringSchema = z.string().refine(
     return regex.test(date);
   },
   {
-    message:
-      'Invalid date format, expected "DD MMM YYYY" (e.g., "25 Aug 2024")',
+    message: `Invalid date format, expected "DD MMM YYYY" (e.g., "25 Aug 2024")`,
   }
 );
 
-const createDiscountClubValidation = z.object({
-  body: z
-    .object({
-      image: z.string({ required_error: 'Image is Required' }),
-      name: z.string({ required_error: 'Name is Required' }),
-      startTime: dateStringSchema,
-      endTime: dateStringSchema,
-      price: z.string({ required_error: 'Price is required' }),
-      discount: z.string({ required_error: 'Discount is required' }),
-      description: z.string({ required_error: 'Description is required' }),
-    })
-    .refine(
-      body => {
-        const start = new Date(body.startTime);
-        const end = new Date(body.endTime);
+const createDiscountClubValidation = z
+  .object({
+    name: z.string({ required_error: 'Name is Required' }),
+    buyGuide: z.string({ required_error: 'BuyGuide is Required' }),
+    brand: z.string().optional(),
+    startTime: dateStringSchema,
+    endTime: dateStringSchema,
+    price: z.string({ required_error: 'Price is required' }),
+    discount: z.string({ required_error: 'Discount is required' }),
+    description: z.string({ required_error: 'Description is required' }),
+  })
+  .refine(
+    data => {
+      const start = new Date(data.startTime);
+      const end = new Date(data.endTime);
 
-        return end > start;
-      },
-      {
-        message: 'Start time should be before End time!',
-      }
-    ),
-});
+      return end > start;
+    },
+    {
+      message: 'Start time should be before End time!',
+    }
+  );
 
-const updatedDiscountClubValidation = z.object({
-  body: z
-    .object({
-      name: z.string().optional(),
-      image: z.string().optional(),
-      startTime: dateStringSchema,
-      endTime: dateStringSchema,
-      price: z.string().optional(),
-      discount: z.string().optional(),
-      description: z.string().optional(),
-    })
-    .refine(
-      body => {
-        const start = new Date(body.startTime);
-        const end = new Date(body.endTime);
+const updatedDiscountClubValidation = z
+  .object({
+    name: z.string().optional(),
+    brand: z.string().optional(),
+    buyGuide: z.string().optional(),
+    startTime: dateStringSchema,
+    endTime: dateStringSchema,
+    price: z.string().optional(),
+    discount: z.string().optional(),
+    description: z.string().optional(),
+  })
+  .refine(
+    data => {
+      const start = new Date(data.startTime);
+      const end = new Date(data.endTime);
 
-        return end > start;
-      },
-      {
-        message: 'Start time should be before End time!',
-      }
-    ),
-});
+      return end > start;
+    },
+    {
+      message: 'Start time should be before End time!',
+    }
+  );
 
 export const DiscountClubValidation = {
   createDiscountClubValidation,

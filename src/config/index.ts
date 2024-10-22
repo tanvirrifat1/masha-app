@@ -8,9 +8,13 @@ export default {
   node_env: process.env.NODE_ENV,
   port: process.env.PORT,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
+  stripe_secret_key: process.env.STRIPE_SECRET_KEY,
+  webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
   jwt: {
     jwt_secret: process.env.JWT_SECRET,
     jwt_expire_in: process.env.JWT_EXPIRE_IN,
+    jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
+    jwt_refresh_expire_in: process.env.JWT_REFRESH_EXPIRE_IN,
   },
   email: {
     from: process.env.EMAIL_FROM,

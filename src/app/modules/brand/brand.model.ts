@@ -49,6 +49,11 @@ const brandSchema = new Schema<IBrand>(
     tiktok: {
       type: String,
     },
+    status: {
+      type: String,
+      enum: ['active', 'delete'],
+      default: 'active',
+    },
   },
   {
     timestamps: true,

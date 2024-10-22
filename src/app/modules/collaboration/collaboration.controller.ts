@@ -3,12 +3,19 @@ import catchAsync from '../../../shared/catchAsync';
 import { CollaborationService } from './collaboration.service';
 import sendResponse from '../../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
+import { getFilePaths } from '../../../shared/getFilePath';
 
 const createCollaborationToDB = catchAsync(
   async (req: Request, res: Response) => {
     const payload = req.body;
 
-    const result = await CollaborationService.createCollaborationToDB(payload);
+    let images = getFilePaths(req.files, 'images');
+
+    const value = {
+      image: images,
+      ...payload,
+    };
+    const result = await CollaborationService.createCollaborationToDB(value);
     sendResponse(res, {
       success: true,
       statusCode: StatusCodes.OK,
@@ -19,7 +26,12 @@ const createCollaborationToDB = catchAsync(
 );
 
 const getAllCollaborations = catchAsync(async (req: Request, res: Response) => {
-  const result = await CollaborationService.getAllCollaborations(req.query);
+  const filter = req.body;
+  const result = await CollaborationService.getAllCollaborations(
+    req.query,
+    filter
+  );
+  console.log(result);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,

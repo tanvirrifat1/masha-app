@@ -6,5 +6,19 @@ export const CampaignSearchAbleFields = [
   'gender',
   'dressCode',
   'brandInstagram',
-  'collaboration',
+  'categoryName',
+  'typeStatus',
 ];
+
+export const CampaignFilterableFields = [
+  'searchTerm',
+  'name',
+  'address',
+  'gender',
+  'dressCode',
+  'brandInstagram',
+  'typeStatus',
+  'categoryName',
+];
+
+export const paginationFields = ['page', 'limit', 'sortBy', 'sortOrder'];

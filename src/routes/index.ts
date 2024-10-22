@@ -11,6 +11,12 @@ import { RequirementRoutes } from '../app/modules/requirement/requirement.route'
 import { InviteRoutes } from '../app/modules/invite/invite.route';
 import { CollaborationRoutes } from '../app/modules/collaboration/collaboration.route';
 import { FaqRoutes } from '../app/modules/Faq/Faq.route';
+import { ReviewRoutes } from '../app/modules/review/review.route';
+import { PermissonRoutes } from '../app/modules/permission_access/permission.route';
+import { TermsAndConditionRoutes } from '../app/modules/termsAndCondition/termsAndCondition.route';
+import { InterestRoutes } from '../app/modules/interest_influencer/interest.route';
+import { SubscriptionRoutes } from '../app/modules/subscribtion/subscribtion.route';
+import { SubscriptationRoutes } from '../app/modules/subscribation/subscribation.route';
 const router = express.Router();
 
 const apiRoutes = [
@@ -26,6 +32,12 @@ const apiRoutes = [
   { path: '/invite', route: InviteRoutes },
   { path: '/collaboration', route: CollaborationRoutes },
   { path: '/faq', route: FaqRoutes },
+  { path: '/review', route: ReviewRoutes },
+  { path: '/permisson', route: PermissonRoutes },
+  { path: '/terms', route: TermsAndConditionRoutes },
+  { path: '/subscribtion', route: SubscriptionRoutes },
+  { path: '/interest-influencer', route: InterestRoutes },
+  { path: '/subscriptation', route: SubscriptationRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

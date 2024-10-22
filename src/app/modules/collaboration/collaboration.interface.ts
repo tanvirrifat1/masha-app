@@ -11,8 +11,10 @@ type ICollaborationStatus =
 export type ICollaboration = {
   campaign: Types.ObjectId;
   influencer: Types.ObjectId;
-  status: ICollaborationStatus;
+  status: 'active' | 'deleted';
+  typeStatus: ICollaborationStatus;
   instagram: string;
   tiktok?: string;
-  image?: [string];
+  categoryName?: string;
+  image?: string[];
 };

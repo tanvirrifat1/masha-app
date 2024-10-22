@@ -20,6 +20,13 @@ const campaignSchema = new Schema<ICampaign>(
       type: Schema.Types.ObjectId,
       ref: 'Influencer',
     },
+    category: {
+      type: String,
+      ref: 'Category',
+    },
+    categoryName: {
+      type: String,
+    },
     typeStatus: {
       type: String,
       enum: ['Pending', 'Accepted', 'Rejected'],
@@ -74,6 +81,7 @@ const campaignSchema = new Schema<ICampaign>(
       type: String,
       trim: true,
     },
+
     status: {
       type: String,
       enum: ['active', 'delete'],
