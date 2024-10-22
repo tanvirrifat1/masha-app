@@ -25,24 +25,6 @@ const createCampaignToDB = async (payload: Partial<ICampaign>) => {
   return campaign;
 };
 
-// const getAllCampaigns = async (query: Record<string, unknown>) => {
-//   const campaignBuilder = new QueryBuilder(
-//     Campaign.find()
-//       .populate('brand')
-//       .populate('influencer')
-//       .populate('category'),
-//     query
-//   )
-//     .search(CampaignSearchAbleFields)
-//     .filter()
-//     .sort()
-//     .paginate()
-//     .fields();
-
-//   const result = await campaignBuilder.modelQuery;
-//   return result;
-// };
-
 const getAllCampaigns = async (
   filters: IICampaignFilters,
   paginationOptions: IPaginationOptions

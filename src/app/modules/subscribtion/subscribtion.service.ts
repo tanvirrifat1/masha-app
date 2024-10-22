@@ -4,6 +4,7 @@ import config from '../../../config';
 import handleCheckoutSessionCompleted from '../../../util/subscribationHelpar/handleCheckoutSessionCompleted';
 import handleInvoicePaymentSucceeded from '../../../util/subscribationHelpar/handleInvoicePaymentSucceeded';
 import handleSubscriptionUpdated from '../../../util/subscribationHelpar/handleSubscriptionUpdated';
+import { Subscribation } from './subscribtion.model';
 
 export const stripe = new Stripe(config.stripe_secret_key as string, {
   apiVersion: '2024-09-30.acacia',
@@ -114,9 +115,22 @@ const createCustomerAndSubscription = async (
     throw new Error('Failed to retrieve payment intent from latest_invoice.');
   }
 
-  return {
+  const createSub = await Subscribation.create({
+    email,
+    priceId,
+    transactionId: paymentIntent.id,
     subscriptionId: subscription.id,
-    clientSecret: paymentIntent.client_secret, // Safely access client_secret
+    clientSecret: paymentIntent.client_secret,
+  });
+
+  if (!createSub) {
+    throw new Error('Failed to create subscription.');
+  }
+
+  return {
+    transactionId: paymentIntent.id,
+    subscriptionId: subscription.id,
+    clientSecret: paymentIntent.client_secret,
   };
 };
 

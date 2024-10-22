@@ -32,20 +32,6 @@ const createCollaborationToDB = async (payload: ICollaboration) => {
 
   const result = await Collaborate.create(value);
 
-  // const updatedCampaign = await Campaign.findOneAndUpdate(
-  //   { _id: result.campaign },
-  //   {
-  //     $set: {
-  //       typeStatus: 'Pending',
-  //       influencer: result.influencer,
-  //     },
-  //   },
-  //   { new: true }
-  // );
-  // if (!updatedCampaign) {
-  //   return `Failed to update campaign with collaboration details`;
-  // }
-
   const createInterestInfluencer = await Interest.create({
     campaign: result.campaign,
     influencer: result.influencer,
@@ -90,23 +76,6 @@ const updatedCollaborationToDB = async (
 
   return result;
 };
-
-// const updatedCollaborationToDB = async (
-//   id: string,
-//   payload: Partial<ICollaboration>
-// ) => {
-//   // Update the collaboration status
-//   const result = await Collaborate.findByIdAndUpdate(
-//     id,
-//     { status: payload.status },
-//     {
-//       new: true,
-//       runValidators: true,
-//     }
-//   );
-
-//   return result;
-// };
 
 export const CollaborationService = {
   createCollaborationToDB,

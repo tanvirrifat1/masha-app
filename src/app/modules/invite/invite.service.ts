@@ -40,8 +40,6 @@ const updatedInviteToDB = async (id: string, payload: Partial<IInvite>) => {
     id,
     {
       $set: {
-        // status: 'Accepted',
-        // influencer: invite.influencer, // Use invite.influencer here
         status: payload.status,
       },
     },

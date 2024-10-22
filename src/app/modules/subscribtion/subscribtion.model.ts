@@ -23,6 +23,12 @@ const subscribationSchema = new Schema<ISubscribtion>(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    clientSecret: {
+      type: String,
+    },
+    transactionId: {
+      type: String,
+    },
   },
   {
     timestamps: true,
