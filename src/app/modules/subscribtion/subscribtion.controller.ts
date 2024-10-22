@@ -3,16 +3,18 @@ import { subscriptionService } from './subscribtion.service';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
+import ApiError from '../../../errors/ApiError';
 
 const createSession = catchAsync(async (req: Request, res: Response) => {
-  const { plan } = req.query; // Destructure plan from req.body
+  const { plan } = req.query;
 
-  if (!plan) {
-    return res.status(400).send('Plan is required');
+  // Check if 'plan' is not undefined and is a string
+  if (!plan || typeof plan !== 'string') {
+    return res.status(400).send('Plan is required and must be a single string');
   }
 
   const result = await subscriptionService.createCheckoutSession(
-    plan.toLowerCase() // Now this will work as plan is a string
+    plan.toLowerCase() // This is safe now as we have confirmed 'plan' is a string
   );
 
   sendResponse(res, {
@@ -86,10 +88,57 @@ const createSubscription = catchAsync(async (req: Request, res: Response) => {
   }
 });
 
+const updateSubscription = catchAsync(async (req: Request, res: Response) => {
+  const { subscriptionId, newPriceId } = req.body;
+
+  const result = await subscriptionService.updateustomerAndSubscription(
+    newPriceId,
+    subscriptionId
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Subscription updated successfully',
+    data: result,
+  });
+});
+
+const CancelSubscription = catchAsync(async (req, res) => {
+  const { subscriptionId } = req.body;
+
+  const result = await subscriptionService.cancelSubscription(subscriptionId);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Subscription canceled successfully',
+    data: result,
+  });
+});
+
+const renewExpiredSubscription = catchAsync(async (req, res) => {
+  const { subscriptionId } = req.body;
+
+  const result = await subscriptionService.renewExpiredSubscriptions(
+    subscriptionId
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Subscription renewExpiredSubscriptions successfully',
+    data: result,
+  });
+});
+
 export const SubscriptionController = {
   createSession,
   Success,
   customerPortal,
   webhookHandler,
   createSubscription,
+  updateSubscription,
+  CancelSubscription,
+  renewExpiredSubscription,
 };

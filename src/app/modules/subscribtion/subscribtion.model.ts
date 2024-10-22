@@ -15,7 +15,9 @@ const subscribationSchema = new Schema<ISubscribtion>(
     subscriptionId: {
       type: String,
     },
-
+    priceId: {
+      type: String,
+    },
     priceAmount: {
       type: Number,
     },
@@ -27,6 +29,12 @@ const subscribationSchema = new Schema<ISubscribtion>(
       type: String,
     },
     transactionId: {
+      type: String,
+    },
+    currentPeriodEnd: {
+      type: String,
+    },
+    currentPeriodStart: {
       type: String,
     },
   },

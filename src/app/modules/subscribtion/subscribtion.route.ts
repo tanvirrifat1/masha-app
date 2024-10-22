@@ -6,6 +6,10 @@ import { SubscriptionController } from './subscribtion.controller';
 const router = Router();
 
 router.post('/subscribe', SubscriptionController.createSubscription);
+router.post('/renew', SubscriptionController.renewExpiredSubscription);
+router.patch('/update', SubscriptionController.updateSubscription);
+router.delete('/cancel', SubscriptionController.CancelSubscription);
+
 router.post(
   '/allHooks',
   express.raw({ type: 'application/json' }),

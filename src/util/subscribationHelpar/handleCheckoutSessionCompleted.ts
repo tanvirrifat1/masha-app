@@ -4,6 +4,7 @@ import { Subscribation } from '../../app/modules/subscribtion/subscribtion.model
 const handleCheckoutSessionCompleted = async (
   session: Stripe.Checkout.Session
 ) => {
+  console.log(session, 'session');
   try {
     const customerId = session.customer;
     const subscriptionId = session.subscription as string;
